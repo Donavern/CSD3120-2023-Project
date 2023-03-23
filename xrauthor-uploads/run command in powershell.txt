@@ -1,0 +1,1 @@
+docker run -dp 3000:3000 --mount type=bind,source="$(pwd)",target=/app/uploads --name xrauthor immersification/xrauthor
