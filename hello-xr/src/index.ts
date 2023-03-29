@@ -493,6 +493,8 @@ function addSound(scene : Scene,SFX)
     SFX.boop = new Sound('boopSFX','assets/sounds/Boop.mp3',scene,null,{loop:false});
     SFX.teleporting = new Sound('teleportingSFX','assets/sounds/Teleporting.mp3',scene,null,{loop:false});
     SFX.teleported = new Sound('teleportedSFX','assets/sounds/Teleported.mp3',scene,null,{loop:false});
+    SFX.footstepForwards = new Sound('footstepForwards','assets/sounds/FootstepForwards.mp3',scene,null,{loop:false});
+    SFX.footstepBackwards = new Sound('footstepForwards','assets/sounds/FootstepBackwards.mp3',scene,null,{loop:false});
 }
 
 /**
@@ -1321,7 +1323,7 @@ function updateObjective(spawnedMeshes,objectiveText)
  * @param {} selectedMesh - to check if mesh is being interacted with
  * @brief moves the camera based on keypress
  */
-function walk(scene : Scene, rotateDelta,selectedMesh)
+function walk(scene : Scene, rotateDelta,selectedMesh,SFX)
 {
     const movementSpeed = 0.3;
 
@@ -1329,26 +1331,50 @@ function walk(scene : Scene, rotateDelta,selectedMesh)
     {
         return;
     }
-    if(rotateDelta.wValue === 3)
+
+    if(rotateDelta.wValue)
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).z;
+        if(!SFX.footstepForwards.isPlaying)
+        {
+            SFX.footstepForwards.play();
+        }
+        if(rotateDelta.wValue === 3)
+        {
+            scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).z;
+        }
+        else
+        {
+            scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).z;
+        }
     }
-    else if(rotateDelta.wValue === -3)
+    else
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).z;
+        SFX.footstepForwards.stop();
     }
 
-    if(rotateDelta.aValue === 3)
+    if(rotateDelta.aValue)
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).z;
+        if(!SFX.footstepBackwards.isPlaying && !SFX.footstepForwards.isPlaying)
+        {
+            SFX.footstepBackwards.play();
+        }
+
+        if(rotateDelta.aValue === 3)
+        {
+            scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).z;
+        }
+        else
+        {
+            scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).z;
+        }
     }
-    else if(rotateDelta.aValue === -3)
+    else
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).z;
+        SFX.footstepBackwards.stop();
     }
 }
 //#endregion
@@ -1380,7 +1406,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
         translationYGizmo: new AxisDragGizmo(new Vector3(0,1,0),Color3.Green()), translationZGizmo: new AxisDragGizmo(new Vector3(0,0,1),Color3.Blue()),
     rotationGizmo:new RotationGizmo(),scalingGizmo : new ScaleGizmo()};
     let attachMeshesHint = {H2:null,O2:null,H2O:null,H2Osecond:null};
-    let SFX = {boop: Sound, teleporting: Sound, teleported:Sound};
+    let SFX = {boop: Sound, teleporting: Sound, teleported:Sound,footstepForwards:Sound,footstepBackwards:Sound};
     let shader = {shader:ShaderMaterial};
     let objectiveText = {text : TextBlock};
 
@@ -1575,7 +1601,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
         //#endregion
 
         //#region Updates (Gizmo, teleport timer, render, resetting variables)
-        walk(scene,rotateDelta,selectedMesh);
+        walk(scene,rotateDelta,selectedMesh,SFX);
         updateGizmo(selectedMesh,mouseDeltaY,srtMode,gizmos,rotateDelta,scene);
         updateTeleportTimer(scene,teleportInfo,deltaTime,shader,SFX);
 
