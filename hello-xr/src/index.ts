@@ -527,19 +527,27 @@ function addWindowEventListeners(scene : Scene, engine,mouseDeltaY,rotateDelta,s
         if(event.key ==='w')
         {
             rotateDelta.wValue = 3;
+            scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).z;
         }
         if(event.key ==='s')
         {
             rotateDelta.wValue = -3;
+            scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).z;
         }
 
         if(event.key ==='a')
         {
             rotateDelta.aValue = 3;
+            scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).z;
         }
         if(event.key ==='d')
         {
             rotateDelta.aValue = -3;
+            scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).x;
+            scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).z;
         }
 
         if(event.key ==='q')
