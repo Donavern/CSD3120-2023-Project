@@ -75,70 +75,28 @@ function createLights(scene:Scene)
  */
 function loadModels(scene : Scene,attachMeshesHint)
 {
-    //Floor
-    SceneLoader.ImportMeshAsync('','assets/models/','cube.glb',scene).then(
+    //School
+    SceneLoader.ImportMeshAsync('','assets/models/','school.glb',scene).then(
         result=>{
             const root = result.meshes[0];
-            root.id = 'floor';
-            root.name = 'floor';
+            root.id = 'School';
+            root.name = 'School';
 
             //Move lower & further
-            root.position.y = -7.8; 
-            root.position.z = 4; 
-
-            //Make bigger
-            root.scaling.x = 15;
-            root.scaling.y = 1;
-            root.scaling.z = 15;
-            result.meshes.forEach((mesh)=>{
-                mesh.isPickable=true;
-                mesh.name ="Floor";
-            })
-        }
-    );
-
-    //Invisible surrounding cube for picking
-    SceneLoader.ImportMeshAsync('','assets/models/','cubeInvis.glb',scene).then(
-        result=>{
-            const root = result.meshes[0];
-            root.id = 'cubeInvis';
-            root.name = 'cubeInvis';
-
-            //Move lower & further
-            root.position.y = -2; 
-            root.position.z = 4; 
-
-            //Make bigger
-            root.scaling.x = 10.1;
-            root.scaling.y = 5;
-            root.scaling.z = 15;
-            result.meshes.forEach((mesh)=>{
-                mesh.isPickable=true;
-                mesh.visibility=0;
-                mesh.name = "CubeInvis"
-            })
-        }
-    );
-
-    //Table
-    SceneLoader.ImportMeshAsync('','assets/models/','hologramtable.glb',scene).then(
-        result=>{
-            const root = result.meshes[0];
-            root.id = 'table';
-            root.name = 'table';
-
-            //Move lower & further
+            root.position.x = 1.5;
             root.position.y = -7; 
-            root.position.z = 4; 
+            root.position.z = 8; 
 
             //Make bigger
-            root.scaling.x = 3;
-            root.scaling.y = 1;
-            root.scaling.z = 3;
+            // root.scaling.x = 15;
+            // root.scaling.y = 1;
+            // root.scaling.z = 15;
             result.meshes.forEach((mesh)=>{
                 mesh.isPickable=true;
-                mesh.name ="Table";
+                mesh.name ="School";
             })
+
+            root.isPickable=true;
         }
     );
 
@@ -281,7 +239,7 @@ function createText(srtMode)
 
     const titleTexture = AdvancedDynamicTexture.CreateForMesh(titlePlane);
     const titleText = new TextBlock('TitleText');
-    titleText.text = 'Donavern\'s XR Chemistry Playground';
+    titleText.text = 'Team 12\'s XR Chemistry Playground';
     titleText.color = 'white';
     titleText.fontSize = 50;
     titleText.outlineColor = 'black';
@@ -514,7 +472,6 @@ function createText(srtMode)
  */
 function addSound(scene : Scene,SFX)
 {
-    const welcomeVoice = new Sound('welcomeVoice','assets/sounds/WelcomeXR.mp3',scene,()=>{welcomeVoice.play()},{loop:false,autoplay:true});
     const classroomBG = new Sound('classroomBG','assets/sounds/ClassroomBG.mp3',scene,()=>{classroomBG.play()},{loop:true});
     SFX.boop = new Sound('boopSFX','assets/sounds/Boop.mp3',scene,null,{loop:false});
     SFX.teleporting = new Sound('teleportingSFX','assets/sounds/Teleporting.mp3',scene,null,{loop:false});
@@ -659,15 +616,15 @@ function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, se
                 }
             );
         }
-        //Pick anything else but floor, table and invis cube
-        else if(pickResult.pickedMesh.name !== "Floor" &&pickResult.pickedMesh.name !== "Table" && pickResult.pickedMesh.name !== "CubeInvis")
+        //Pick anything else but the school model and invis cube
+        else if(pickResult.pickedMesh.name !== "School" && pickResult.pickedMesh.name !== "CubeInvis")
         {
             selectedMesh.mesh = pickResult.pickedMesh;
             scene.activeCamera.detachControl();
         }
 
         //Did not pick up anything
-        if(selectedMesh.mesh === null && (pickResult.pickedMesh.name === "Floor" || pickResult.pickedMesh.name === "Table"))
+        if(selectedMesh.mesh === null && pickResult.pickedMesh.name === "School")
         {
             //Using this to increment timer before user can teleport
             teleportInfo.rightClickHeld=true;
@@ -689,7 +646,7 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo, pickResultMultipl
     if (pickResult.hit && pickResult.pickedMesh) 
     {
         //As long as the pointer is moving, find latest position to teleport to
-        if(pickResult.pickedMesh.name ==="Floor" || pickResult.pickedMesh.name ==="Table")
+        if(pickResult.pickedMesh.name === "School")
         {
             teleportInfo.lastSavedPickedPosition = pickResult.pickedPoint;
         }
@@ -697,16 +654,29 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo, pickResultMultipl
         if(selectedMesh.mesh)
         {
             //Only allow user to move objects within the invisible cube or on the table
-            if((pickResult.pickedMesh.name ==="CubeInvis" || pickResult.pickedMesh.name === "Table") && selectedMesh.mesh.parent)
+            if(pickResult.pickedMesh.name ==="School" && selectedMesh.mesh.parent)
             {
                 //Transform x,y,z
                 //Update the position of the selected mesh
                 if (selectedMesh.mesh.parent instanceof TransformNode) 
                 {
-                    selectedMesh.mesh.parent.position.copyFrom(pickResult.pickedPoint);
+                    const a = pickResult.pickedPoint.x - scene.activeCamera.position.x;
+                    const b = pickResult.pickedPoint.y - scene.activeCamera.position.y;
+                    const c = pickResult.pickedPoint.z - scene.activeCamera.position.z;
 
-                    if(pickResult.pickedMesh.name === "Table")
-                        selectedMesh.mesh.parent.position.y += 0.5;
+                    const distanceOfPickedPointFromCamera = Math.sqrt(a*a + b*b + c*c);
+                    const directionFromCameraToPickedPoint = pickResult.pickedPoint.subtract(scene.activeCamera.position).normalize();
+
+                    if(distanceOfPickedPointFromCamera>25.0)
+                    {
+                        //Limit how far it can be
+                        selectedMesh.mesh.parent.position = scene.activeCamera.position.add(directionFromCameraToPickedPoint.multiplyByFloats(25,25,25));
+                    }
+                    else
+                    {
+                        selectedMesh.mesh.parent.position.copyFrom(pickResult.pickedPoint);
+                        selectedMesh.mesh.parent.position.y += 0.2;
+                    }
                 }
             }
             //Check if user trying to combine H atoms to form H2 molecule
@@ -1065,6 +1035,13 @@ function updateTeleportTimer(scene : Scene,teleportInfo,deltaTime : number,shade
         teleportInfo.circlePlane.position.x = teleportInfo.lastSavedPickedPosition.x;
         teleportInfo.circlePlane.position.y = teleportInfo.lastSavedPickedPosition.y + 0.01;
         teleportInfo.circlePlane.position.z = teleportInfo.lastSavedPickedPosition.z;
+
+        //Scale the teleport circle size based on distance (hard to see if small and far away)
+        const tempCameraToCircleVector = teleportInfo.circlePlane.position.subtract(scene.activeCamera.position);
+        let maxAxisValue = Math.max(tempCameraToCircleVector.x,tempCameraToCircleVector.y,tempCameraToCircleVector.z);
+        maxAxisValue /= 10.0;
+
+        teleportInfo.circlePlane.scaling = new Vector3(maxAxisValue,maxAxisValue,maxAxisValue);
 
         teleportInfo.circlePlane.isVisible=true;
 
