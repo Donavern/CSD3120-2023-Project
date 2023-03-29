@@ -1028,30 +1028,34 @@ function updateTeleportTimer(scene : Scene,teleportInfo,deltaTime : number,shade
 {
     if(teleportInfo.rightClickHeld)
     {
-        SFX.teleporting.isPlaying ? null: SFX.teleporting.play();
-
         teleportInfo.timer+=deltaTime;
-        
-        teleportInfo.circlePlane.position.x = teleportInfo.lastSavedPickedPosition.x;
-        teleportInfo.circlePlane.position.y = teleportInfo.lastSavedPickedPosition.y + 0.01;
-        teleportInfo.circlePlane.position.z = teleportInfo.lastSavedPickedPosition.z;
 
-        //Scale the teleport circle size based on distance (hard to see if small and far away)
-        const tempCameraToCircleVector = teleportInfo.circlePlane.position.subtract(scene.activeCamera.position);
-        let maxAxisValue = Math.max(tempCameraToCircleVector.x,tempCameraToCircleVector.y,tempCameraToCircleVector.z);
-        maxAxisValue /= 10.0;
-
-        teleportInfo.circlePlane.scaling = new Vector3(maxAxisValue,maxAxisValue,maxAxisValue);
-
-        teleportInfo.circlePlane.isVisible=true;
-
-        if(teleportInfo.timer >= teleportInfo.threshold)
+        if(teleportInfo.timer >= teleportInfo.delay)
         {
-            teleportInfo.timer = 0;
-            scene.activeCamera.position.x = teleportInfo.lastSavedPickedPosition.x;
-            scene.activeCamera.position.z = teleportInfo.lastSavedPickedPosition.z;
-            SFX.teleporting.stop();
-            SFX.teleported.play();
+            SFX.teleporting.isPlaying ? null: SFX.teleporting.play();
+
+            
+            teleportInfo.circlePlane.position.x = teleportInfo.lastSavedPickedPosition.x;
+            teleportInfo.circlePlane.position.y = teleportInfo.lastSavedPickedPosition.y + 0.01;
+            teleportInfo.circlePlane.position.z = teleportInfo.lastSavedPickedPosition.z;
+
+            //Scale the teleport circle size based on distance (hard to see if small and far away)
+            const tempCameraToCircleVector = teleportInfo.circlePlane.position.subtract(scene.activeCamera.position);
+            let maxAxisValue = Math.max(Math.abs(tempCameraToCircleVector.x),Math.abs(tempCameraToCircleVector.y),Math.abs(tempCameraToCircleVector.z));
+            maxAxisValue /= 10.0;
+
+            teleportInfo.circlePlane.scaling = new Vector3(maxAxisValue,maxAxisValue,maxAxisValue);
+
+            teleportInfo.circlePlane.isVisible=true;
+
+            if(teleportInfo.timer >= teleportInfo.threshold)
+            {
+                teleportInfo.timer = 0;
+                scene.activeCamera.position.x = teleportInfo.lastSavedPickedPosition.x;
+                scene.activeCamera.position.z = teleportInfo.lastSavedPickedPosition.z;
+                SFX.teleporting.stop();
+                SFX.teleported.play();
+            }
         }
     }
     else
@@ -1061,7 +1065,7 @@ function updateTeleportTimer(scene : Scene,teleportInfo,deltaTime : number,shade
         SFX.teleporting.stop();
     }
     
-    let value = teleportInfo.timer/teleportInfo.threshold;
+    let value = (teleportInfo.timer-teleportInfo.delay)/teleportInfo.threshold;
     if(value<0.0)
     {
         value = 0.0;
@@ -1180,7 +1184,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
     let mouseDeltaY = {value:0};
     let rotateDelta = {wValue:0,aValue:0,qValue:0};
     let srtMode = {value: 0,text : TextBlock};
-    let teleportInfo = {rightClickHeld:false,timer:0,threshold:2,lastSavedPickedPosition:new Vector3(0,0,0),circlePlane : AbstractMesh};
+    let teleportInfo = {rightClickHeld:false,timer:0,threshold:2,lastSavedPickedPosition:new Vector3(0,0,0),circlePlane : AbstractMesh,delay:0.5};
     let gizmos = {translationXGizmo : new AxisDragGizmo(new Vector3(1,0,0),Color3.Red()),
         translationYGizmo: new AxisDragGizmo(new Vector3(0,1,0),Color3.Green()), translationZGizmo: new AxisDragGizmo(new Vector3(0,0,1),Color3.Blue()),
     rotationGizmo:new RotationGizmo(),scalingGizmo : new ScaleGizmo()};
