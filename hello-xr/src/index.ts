@@ -574,7 +574,7 @@ function updateModeText(number : number) : string
  * @param {} teleportInfo - object storing location to teleport to, if user is holding right click, timer before teleporting, teleport threshold 
  * @brief function called when a mouse is clicked or a controller trigger is pressed, to decide if an object should be picked or start teleporting
  */
-function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, selectedMesh,teleportInfo)
+function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, selectedMesh,teleportInfo,spawnedMeshes)
 {
     if (pickResult?.hit && pickResult?.pickedMesh) 
     {
@@ -594,6 +594,8 @@ function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, se
                         mesh.id = "Hinstance";
                         mesh.name = "Hinstance";
                     });
+
+                    spawnedMeshes.meshes.push(root);
                 }
             );
         }
@@ -613,11 +615,13 @@ function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, se
                         mesh.id = "Oinstance";
                         mesh.name = "Oinstance";
                     });
+
+                    spawnedMeshes.meshes.push(root);
                 }
             );
         }
         //Pick anything else but the school model and invis cube
-        else if(pickResult.pickedMesh.name !== "School" && pickResult.pickedMesh.name !== "CubeInvis")
+        else if(pickResult.pickedMesh.name !== "School")
         {
             selectedMesh.mesh = pickResult.pickedMesh;
             scene.activeCamera.detachControl();
@@ -641,7 +645,7 @@ function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, se
  * @param {} attachMeshesHint - object storing the meshes used as hint when combining
  * @brief function called when mouse moves, or constantly in VR mode. To update teleport position. To decide if hint should be showed for atom/molecule combination
  */
-function pointerMoveGivenPickingInfo(pickResult : PickingInfo, pickResultMultiple : PickingInfo[],scene : Scene,selectedMesh,teleportInfo,attachMeshesHint)
+function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,selectedMesh,teleportInfo,attachMeshesHint,spawnedMeshes)
 {
     if (pickResult.hit && pickResult.pickedMesh) 
     {
@@ -653,12 +657,12 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo, pickResultMultipl
         
         if(selectedMesh.mesh)
         {
-            //Only allow user to move objects within the invisible cube or on the table
-            if(pickResult.pickedMesh.name ==="School" && selectedMesh.mesh.parent)
+            //Only allow user to move objects
+            if((pickResult.pickedMesh.name ==="School" || pickResult.pickedMesh.name === "O2instance" || pickResult.pickedMesh.name === "H2instance") && selectedMesh.mesh.parent)
             {
                 //Transform x,y,z
                 //Update the position of the selected mesh
-                if (selectedMesh.mesh.parent instanceof TransformNode) 
+                if (pickResult.pickedMesh.uniqueId !== selectedMesh.mesh.uniqueId && selectedMesh.mesh.parent instanceof TransformNode) 
                 {
                     const a = pickResult.pickedPoint.x - scene.activeCamera.position.x;
                     const b = pickResult.pickedPoint.y - scene.activeCamera.position.y;
@@ -707,59 +711,71 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo, pickResultMultipl
                     });
                 }
             }
-        }
-    }
-    
-    //As long as I am holding a H2 or O2
-    if(selectedMesh.mesh && (selectedMesh.mesh.name === "H2instance" || selectedMesh.mesh.name ==="O2instance"))
-    {
-        let firstH2Mesh : AbstractMesh = null;
-        let secondH2Mesh: AbstractMesh = null;
-        let O2Mesh : AbstractMesh = null;
+
+            if((selectedMesh.mesh.name === "H2instance" || selectedMesh.mesh.name ==="O2instance") && selectedMesh.mesh instanceof AbstractMesh)
+            {
+                let firstH2Mesh : AbstractMesh = null;
+                let secondH2Mesh: AbstractMesh = null;
+                let O2Mesh : AbstractMesh = null;
+                
+                //Detect which mesh is being held, assign it to one of the above^
+                if(selectedMesh.mesh.name === "H2instance")
+                {
+                    firstH2Mesh = selectedMesh.mesh;
+                }
+                else
+                {
+                    O2Mesh = selectedMesh.mesh;
+                }
         
-        //Make sure 2 H2 and 1 O2 molecules are together
-        pickResultMultiple.forEach(info=>{
-            if(info.pickedMesh.name=="H2instance")
-            {
-                if(firstH2Mesh===null)
-                {
-                    firstH2Mesh = info.pickedMesh;
-                }
-                else if(secondH2Mesh === null)
-                {
-                    secondH2Mesh = info.pickedMesh;
-                }
-            }
-            else if(info.pickedMesh.name=="O2instance")
-            {
-                if(O2Mesh === null)
-                {
-                    O2Mesh = info.pickedMesh;
-                }
-            }
-        });
-
-        if(firstH2Mesh && secondH2Mesh && O2Mesh && selectedMesh.mesh.parent instanceof TransformNode)
-        {
-            //Spawn in the hint that shows it can bond
-            if (attachMeshesHint.H2O && attachMeshesHint.H2Osecond) 
-            {
-                const temp = attachMeshesHint.H2O as AbstractMesh;
-                temp.position = selectedMesh.mesh.parent.position;
-
-                temp.getChildren().forEach((mesh)=>{
-                    const temp2 = mesh as AbstractMesh;
-                    temp2.isVisible=true;
+                //Now check if the selected mesh intersects with any other mesh
+                spawnedMeshes.meshes.forEach((mesh) => {
+                    if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,true,true))
+                    {
+                        if(mesh.name === "H2instance")
+                        {
+                            if(firstH2Mesh === null)
+                            {
+                                firstH2Mesh = mesh;
+                            }
+                            else if(secondH2Mesh === null)
+                            {
+                                secondH2Mesh = mesh;
+                            }
+                        }
+                        else if(mesh.name ==="O2instance")
+                        {
+                            if(O2Mesh === null)
+                            {
+                                O2Mesh = mesh;
+                            }
+                        }
+                    }
                 });
-
-                const temp3 = attachMeshesHint.H2Osecond as AbstractMesh;
-                const meshToCameraDir = selectedMesh.mesh.parent.position.subtract(scene.activeCamera.position).normalize();
-                temp3.position = selectedMesh.mesh.parent.position.subtract(meshToCameraDir);
-
-                temp3.getChildren().forEach((mesh)=>{
-                    const temp2 = mesh as AbstractMesh;
-                    temp2.isVisible=true;
-                });
+        
+                if(firstH2Mesh && secondH2Mesh && O2Mesh && selectedMesh.mesh.parent instanceof TransformNode)
+                {
+                    //Spawn in the hint that shows it can bond
+                    if (attachMeshesHint.H2O && attachMeshesHint.H2Osecond) 
+                    {
+                        const temp = attachMeshesHint.H2O as AbstractMesh;
+                        temp.position = selectedMesh.mesh.parent.position;
+        
+                        temp.getChildren().forEach((mesh)=>{
+                            const temp2 = mesh as AbstractMesh;
+                            temp2.isVisible=true;
+                        });
+        
+                        const temp3 = attachMeshesHint.H2Osecond as AbstractMesh;
+                        const meshToCameraDir = selectedMesh.mesh.parent.position.subtract(scene.activeCamera.position).normalize();
+                        temp3.position = selectedMesh.mesh.parent.position.subtract(meshToCameraDir);
+        
+                        temp3.getChildren().forEach((mesh)=>{
+                            const temp2 = mesh as AbstractMesh;
+                            temp2.isVisible=true;
+                        });
+                    }
+                }
             }
         }
     }
@@ -776,7 +792,7 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo, pickResultMultipl
  * @param {} SFX - to store the sound to be used back in the main function
  * @brief function called when mouse releases the left click or when vr controller trigger is released. To decide if atom/molecule should bond, to release object.
  */
-function pointerUpGivenPickingInfo(pickResult : PickingInfo,pickResultMultiple : PickingInfo[],scene : Scene,selectedMesh,attachMeshesHint,canvasID : string,teleportInfo,SFX)
+function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,selectedMesh,attachMeshesHint,canvasID : string,teleportInfo,SFX,spawnedMeshes)
 {
     if(selectedMesh.mesh)
     {
@@ -796,8 +812,14 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,pickResultMultiple :
                         mesh.id = "H2instance";
                         mesh.name = "H2instance";
                     });
+
+                    spawnedMeshes.meshes.push(root);
                 }
             );
+
+            let pickedID = pickResult.pickedMesh.parent.uniqueId;
+            let selectedID = selectedMesh.mesh.parent.uniqueId;
+            spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== pickedID) && (mesh.uniqueId !== selectedID));
 
             pickResult.pickedMesh.dispose();
             selectedMesh.mesh.dispose();
@@ -821,8 +843,13 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,pickResultMultiple :
                         mesh.id = "O2instance";
                         mesh.name = "O2instance";
                     });
+
+                    spawnedMeshes.meshes.push(root);
                 }
             );
+            let pickedID = pickResult.pickedMesh.parent.uniqueId;
+            let selectedID = selectedMesh.mesh.parent.uniqueId;
+            spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== pickedID) && (mesh.uniqueId !== selectedID));
 
             pickResult.pickedMesh.dispose();
             selectedMesh.mesh.dispose();
@@ -837,24 +864,37 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,pickResultMultiple :
             let secondH2Mesh: AbstractMesh = null;
             let O2Mesh : AbstractMesh = null;
 
-            //Check that I have enough to bond into 2H2O
-            pickResultMultiple.forEach(info=>{
-                if(info.pickedMesh.name=="H2instance")
+            //Detect which mesh is being held, assign it to one of the above^
+            if(selectedMesh.mesh.name === "H2instance")
+            {
+                firstH2Mesh = selectedMesh.mesh;
+            }
+            else
+            {
+                O2Mesh = selectedMesh.mesh;
+            }
+    
+            //Now check if the selected mesh intersects with any other mesh
+            spawnedMeshes.meshes.forEach((mesh) => {
+                if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,true,true))
                 {
-                    if(firstH2Mesh===null)
+                    if(mesh.name === "H2instance")
                     {
-                        firstH2Mesh = info.pickedMesh;
+                        if(firstH2Mesh === null)
+                        {
+                            firstH2Mesh = mesh;
+                        }
+                        else if(secondH2Mesh === null)
+                        {
+                            secondH2Mesh = mesh;
+                        }
                     }
-                    else if(secondH2Mesh === null)
+                    else if(mesh.name ==="O2instance")
                     {
-                        secondH2Mesh = info.pickedMesh;
-                    }
-                }
-                else if(info.pickedMesh.name=="O2instance")
-                {
-                    if(O2Mesh === null)
-                    {
-                        O2Mesh = info.pickedMesh;
+                        if(O2Mesh === null)
+                        {
+                            O2Mesh = mesh;
+                        }
                     }
                 }
             });
@@ -887,6 +927,12 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,pickResultMultiple :
                             });
                         }
                     );
+
+                    let firstID = firstH2Mesh.uniqueId;
+                    let secondID = secondH2Mesh.uniqueId;
+                    let thirdID = O2Mesh.parent.uniqueId;
+                    spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== firstID) && (mesh.uniqueId !== secondID) && (mesh.uniqueId !== thirdID));
+                    
                     firstH2Mesh.dispose();
                     secondH2Mesh.dispose();
                     O2Mesh.dispose();
@@ -1181,6 +1227,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
     const scene = new Scene(engine);
 
     let selectedMesh  = {mesh: AbstractMesh};
+    let spawnedMeshes = {meshes: [] as AbstractMesh[]};
     let mouseDeltaY = {value:0};
     let rotateDelta = {wValue:0,aValue:0,qValue:0};
     let srtMode = {value: 0,text : TextBlock};
@@ -1228,6 +1275,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
                 {
                     firstController = newXRController;
                     firstTrigger = newMotionController.getMainComponent();
+
 
                     firstTrigger?.onButtonStateChangedObservable.add((event)=>{
                         if(event.changes.pressed)
@@ -1291,7 +1339,6 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
         lastTime = currentTime;
 
         srtMode.text instanceof TextBlock? srtMode.text.text = updateModeText(srtMode.value) : null;
-
         //#region Input handling mouse & keyboard
         if(sessionManager?.sessionMode !== "immersive-vr")
         {
@@ -1299,7 +1346,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
                 if(event.pointerType !== "xr" && event.button === 0) //Left mouse button
                 {   
                     const pickResult = scene.pick(scene.pointerX, scene.pointerY);
-                    pointerDownGivenPickingInfo(pickResult,scene,selectedMesh,teleportInfo);
+                    pointerDownGivenPickingInfo(pickResult,scene,selectedMesh,teleportInfo,spawnedMeshes);
                 }
             };
 
@@ -1308,8 +1355,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
                 {
                     //Update position to teleport to using floor only
                     const pickResult = scene.pick(scene.pointerX, scene.pointerY);
-                    const pickResultMultiple = scene.multiPick(scene.pointerX,scene.pointerY);
-                    pointerMoveGivenPickingInfo(pickResult,pickResultMultiple,scene,selectedMesh,teleportInfo,attachMeshesHint);
+                    pointerMoveGivenPickingInfo(pickResult,scene,selectedMesh,teleportInfo,attachMeshesHint,spawnedMeshes);
                 }
             };
 
@@ -1317,8 +1363,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
                 if(event.pointerType !== "xr" && event.button === 0) //Left mouse button
                 {
                     const pickResult = scene.pick(scene.pointerX, scene.pointerY);
-                    const pickResultMultiple = scene.multiPick(scene.pointerX, scene.pointerY);
-                    pointerUpGivenPickingInfo(pickResult,pickResultMultiple,scene,selectedMesh,attachMeshesHint,canvasID,teleportInfo,SFX);
+                    pointerUpGivenPickingInfo(pickResult,scene,selectedMesh,attachMeshesHint,canvasID,teleportInfo,SFX,spawnedMeshes);
                 }
             };
         }
@@ -1335,8 +1380,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
             if(firstTriggerStatus === 1) //onPointerDown
             {
                 pickResult = scene.pickWithRay(firstTriggerRay);
-
-                pointerDownGivenPickingInfo(pickResult,scene,selectedMesh,teleportInfo);
+                pointerDownGivenPickingInfo(pickResult,scene,selectedMesh,teleportInfo,spawnedMeshes);
 
                 firstTriggerStatus = 2;
             }
@@ -1345,14 +1389,14 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
                 pickResult = scene.pickWithRay(firstTriggerRay);
                 pickResultMultiple = scene.multiPickWithRay(firstTriggerRay);
 
-                pointerMoveGivenPickingInfo(pickResult,pickResultMultiple,scene,selectedMesh,teleportInfo,attachMeshesHint);
+                pointerMoveGivenPickingInfo(pickResult,scene,selectedMesh,teleportInfo,attachMeshesHint,spawnedMeshes);
             }
             else if(firstTriggerStatus===3) //on pointer up
             {
                 pickResult = scene.pickWithRay(firstTriggerRay);
                 pickResultMultiple = scene.multiPickWithRay(firstTriggerRay);
 
-                pointerUpGivenPickingInfo(pickResult,pickResultMultiple,scene,selectedMesh,attachMeshesHint,canvasID,teleportInfo,SFX);
+                pointerUpGivenPickingInfo(pickResult,scene,selectedMesh,attachMeshesHint,canvasID,teleportInfo,SFX,spawnedMeshes);
 
                 firstTriggerStatus=0;
             }
