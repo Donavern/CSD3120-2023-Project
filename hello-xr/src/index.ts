@@ -527,27 +527,19 @@ function addWindowEventListeners(scene : Scene, engine,mouseDeltaY,rotateDelta,s
         if(event.key ==='w')
         {
             rotateDelta.wValue = 3;
-            scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).x;
-            scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).z;
         }
         if(event.key ==='s')
         {
             rotateDelta.wValue = -3;
-            scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).x;
-            scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).z;
         }
 
         if(event.key ==='a')
         {
             rotateDelta.aValue = 3;
-            scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).x;
-            scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).z;
         }
         if(event.key ==='d')
         {
             rotateDelta.aValue = -3;
-            scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).x;
-            scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).z;
         }
 
         if(event.key ==='q')
@@ -1294,6 +1286,41 @@ function updateObjective(spawnedMeshes,objectiveText)
         objectiveText.text.text = "Objective:\nCreate 2 H atom";
     }
 }
+
+/**
+ * @param {Scene} scene - to manipulate the active camera
+ * @param {} rotateDelta - to check which keys are pressed
+ * @param {} selectedMesh - to check if mesh is being interacted with
+ * @brief moves the camera based on keypress
+ */
+function walk(scene : Scene, rotateDelta,selectedMesh)
+{
+    if(selectedMesh.mesh !== null)
+    {
+        return;
+    }
+    if(rotateDelta.wValue === 3)
+    {
+        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).z;
+    }
+    else if(rotateDelta.wValue === -3)
+    {
+        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).z;
+    }
+
+    if(rotateDelta.aValue === 3)
+    {
+        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).z;
+    }
+    else if(rotateDelta.aValue === -3)
+    {
+        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).z;
+    }
+}
 //#endregion
 
 /**
@@ -1518,6 +1545,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
         //#endregion
 
         //#region Updates (Gizmo, teleport timer, render, resetting variables)
+        walk(scene,rotateDelta,selectedMesh);
         updateGizmo(selectedMesh,mouseDeltaY,srtMode,gizmos,rotateDelta,scene);
         updateTeleportTimer(scene,teleportInfo,deltaTime,shader,SFX);
 
