@@ -565,6 +565,37 @@ function addWindowEventListeners(scene : Scene, engine,mouseDeltaY,rotateDelta,s
         }
     });
     
+    window.addEventListener('keyup',event=>
+    {
+        //For rotation
+        if(event.key ==='w')
+        {
+            rotateDelta.wValue = 0;
+        }
+        if(event.key ==='s')
+        {
+            rotateDelta.wValue = 0;
+        }
+
+        if(event.key ==='a')
+        {
+            rotateDelta.aValue = 0;
+        }
+        if(event.key ==='d')
+        {
+            rotateDelta.aValue = 0;
+        }
+
+        if(event.key ==='q')
+        {
+            rotateDelta.qValue = 0;
+        }
+        if(event.key ==='e')
+        {
+            rotateDelta.qValue = 0;
+        }
+    });
+
     window.addEventListener('wheel', event => {
         mouseDeltaY.value = event.deltaY; //>0 is down, <0 is up
     });
@@ -1147,9 +1178,6 @@ function updateTeleportTimer(scene : Scene,teleportInfo,deltaTime : number,shade
  */
 function resetVariablesForNextFrame(mouseDeltaY,rotateDelta)
 {
-    rotateDelta.wValue = 0;
-    rotateDelta.aValue = 0;
-    rotateDelta.qValue = 0;
     mouseDeltaY.value=0;
 }
 
@@ -1295,30 +1323,32 @@ function updateObjective(spawnedMeshes,objectiveText)
  */
 function walk(scene : Scene, rotateDelta,selectedMesh)
 {
+    const movementSpeed = 0.3;
+
     if(selectedMesh.mesh !== null)
     {
         return;
     }
     if(rotateDelta.wValue === 3)
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z)).z;
+        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).z;
     }
     else if(rotateDelta.wValue === -3)
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z)).z;
+        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.Z).scale(movementSpeed)).z;
     }
 
     if(rotateDelta.aValue === 3)
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X)).z;
+        scene.activeCamera.position.x = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.subtract(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).z;
     }
     else if(rotateDelta.aValue === -3)
     {
-        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).x;
-        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X)).z;
+        scene.activeCamera.position.x = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).x;
+        scene.activeCamera.position.z = scene.activeCamera.position.add(scene.activeCamera.getDirection(Axis.X).scale(movementSpeed)).z;
     }
 }
 //#endregion
