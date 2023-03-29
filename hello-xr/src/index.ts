@@ -7,7 +7,7 @@
  */
 import {AdvancedDynamicTexture, TextBlock} from 'babylonjs-gui';
 import { Engine, MeshBuilder,Scene, Color3,Vector3, UniversalCamera, HemisphericLight, 
-    SceneLoader,AbstractMesh,Sound, PhotoDome, TransformNode, Space, AxisDragGizmo, RotationGizmo, ScaleGizmo, WebXRInput, WebXRInputSource, WebXRAbstractMotionController, WebXRControllerComponent, Ray, PickingInfo, WebXRSessionManager, Axis, Texture, StandardMaterial, Mesh, TextureSampler, Effect, ShaderMaterial} from 'babylonjs';
+    SceneLoader,AbstractMesh,Sound, PhotoDome, TransformNode, Space, AxisDragGizmo, RotationGizmo, ScaleGizmo, WebXRInput, WebXRInputSource, WebXRAbstractMotionController, WebXRControllerComponent, Ray, PickingInfo, WebXRSessionManager, Axis, Texture, StandardMaterial, Mesh, TextureSampler, Effect, ShaderMaterial, Hinge2Joint} from 'babylonjs';
 import 'babylonjs-loaders';
 
 //#region Helper Functions
@@ -230,7 +230,7 @@ function loadModels(scene : Scene,attachMeshesHint)
  * @param {} srtMode - object storing the edit mode (scale/translation/rotation) and the text for display
  * @brief Create a bunch of text that displays helpful information to the user, like instructions
  */
-function createText(srtMode)
+function createText(srtMode,objectiveText)
 {
     //Create title text
     const titlePlane = MeshBuilder.CreatePlane('Title Plane',{size:15});
@@ -463,6 +463,23 @@ function createText(srtMode)
     srtMode.text.outlineColor = 'black';
     srtMode.text.outlineWidth = 5;
     srtModeTexture.addControl(srtMode.text);
+
+
+    //Objective
+    const objectivePlane = MeshBuilder.CreatePlane('Objective Plane',{size:15});
+    objectivePlane.position.x = 5;
+    objectivePlane.position.y = -3;
+    objectivePlane.position.z = 9;
+    objectivePlane.isPickable=false;
+
+    const objectiveTexture = AdvancedDynamicTexture.CreateForMesh(objectivePlane);
+    objectiveText.text = new TextBlock('InstructionText');
+    objectiveText.text.text = 'Objective:\n';
+    objectiveText.text.color = 'white';
+    objectiveText.text.fontSize = 20;
+    objectiveText.text.outlineColor = 'black';
+    objectiveText.text.outlineWidth = 5;
+    objectiveTexture.addControl(objectiveText.text);
 }
 
 /**
@@ -1207,6 +1224,68 @@ function loadTextures(scene : Scene, shader, teleportInfo)
     teleportInfo.circlePlane.material=circleMaterial;
     teleportInfo.circlePlane.isVisible=false;
 }
+
+/**
+ * @param {} spawnedMeshes - meshes in scene
+ * @param {} objectiveText - object to store the teleporting bar
+ * @brief Detects the meshes on scene and choose next objective for user
+ */
+function updateObjective(spawnedMeshes,objectiveText)
+{
+    let HCount : number = 0;
+    let OCount : number = 0;
+    let H2Count : number = 0;
+    let O2Count : number = 0;
+    let H2OCount : number = 0;
+    
+    spawnedMeshes.meshes.forEach((mesh)=>{
+        if(mesh.name === "Hinstance")
+        {
+            ++HCount;
+        }
+        else if(mesh.name === "Oinstance")
+        {
+            ++OCount;
+        }
+        else if(mesh.name === "H2instance")
+        {
+            ++H2Count;
+        }
+        else if(mesh.name === "O2instance")
+        {
+            ++O2Count;
+        }
+        else if(mesh.name === "H2Oinstance")
+        {
+            ++H2OCount;
+        }
+    });
+
+    if(H2OCount)
+    {
+        objectiveText.text.text = "Objective:\nCompleted!";
+    }
+    else if(H2Count >= 2 && O2Count >=1) //Have Both
+    {
+        objectiveText.text.text = "Objective:\nCombine 2H\u2082 molecules\nand 1O\u2082 molecule\nto make 2H\u2082O molecules\nby overlapping them";
+    }
+    else if(O2Count < 1 && OCount>=2) //Lacking O2
+    {
+        objectiveText.text.text = "Objective:\nCombine 2O molecules\nto make 1O\u2082 molecule";
+    }
+    else if(H2Count < 2 && HCount>=2) //Lacking H2
+    {
+        objectiveText.text.text = "Objective:\nCombine 2H molecules\nto make 1H\u2082 molecule";
+    }
+    else if(OCount < 2 && O2Count === 0)
+    {
+        objectiveText.text.text = "Objective:\nCreate 2 O atom";
+    }
+    else if(HCount < 2 && H2Count < 2)
+    {
+        objectiveText.text.text = "Objective:\nCreate 2 H atom";
+    }
+}
 //#endregion
 
 /**
@@ -1238,11 +1317,12 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
     let attachMeshesHint = {H2:null,O2:null,H2O:null,H2Osecond:null};
     let SFX = {boop: Sound, teleporting: Sound, teleported:Sound};
     let shader = {shader:ShaderMaterial};
+    let objectiveText = {text : TextBlock};
 
     createClassRoomPhotoDome(scene);
     createCamera(scene,<HTMLCanvasElement>document.getElementById(canvasID));
     createLights(scene);
-    createText(srtMode);
+    createText(srtMode,objectiveText);
     loadModels(scene,attachMeshesHint);
     loadTextures(scene,shader,teleportInfo);
     addSound(scene,SFX);
@@ -1436,6 +1516,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
         scene.render();
 
         resetVariablesForNextFrame(mouseDeltaY,rotateDelta);
+        updateObjective(spawnedMeshes,objectiveText);
         //#endregion
     });
     //#endregion
