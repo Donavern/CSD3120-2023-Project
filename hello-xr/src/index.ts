@@ -730,7 +730,7 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,sele
         
                 //Now check if the selected mesh intersects with any other mesh
                 spawnedMeshes.meshes.forEach((mesh) => {
-                    if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,true,true))
+                    if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,false,true))
                     {
                         if(mesh.name === "H2instance")
                         {
@@ -876,7 +876,7 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
     
             //Now check if the selected mesh intersects with any other mesh
             spawnedMeshes.meshes.forEach((mesh) => {
-                if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,true,true))
+                if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,false,true))
                 {
                     if(mesh.name === "H2instance")
                     {
