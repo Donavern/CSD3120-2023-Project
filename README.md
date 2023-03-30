@@ -100,3 +100,103 @@ XR Experience using babylonjs and XRAuthor
 Code Snippet: You will need the index.ts file located within "hello-xr\src". 
 You can then use "import {createXRScene} from './index'", do note the the './index', depending on where you put this file at relative to your main.js, can be different. 
 Afterwards, you can call the function using "createXRScene('renderCanvas',null);".
+#
+Directory Tree
+
+```
+.
+├── README.md
+├── hello-xr (The folder for this team project)
+│   ├── README.md
+│   ├── dist 
+│   │   ├── assets
+│   │   │   ├── models
+│   │   │   │   ├── H.glb
+│   │   │   │   ├── H2.glb
+│   │   │   │   ├── H2O.glb
+│   │   │   │   ├── O.glb
+│   │   │   │   ├── O2.glb
+│   │   │   │   ├── cube.glb
+│   │   │   │   ├── cubeInvis.glb
+│   │   │   │   ├── hologramtable.glb
+│   │   │   │   └── school.glb
+│   │   │   ├── sounds
+│   │   │   │   ├── Boop.mp3
+│   │   │   │   ├── ClassroomBG.mp3
+│   │   │   │   ├── FootstepBackwards.mp3
+│   │   │   │   ├── FootstepForwards.mp3
+│   │   │   │   ├── Teleported.mp3
+│   │   │   │   ├── Teleporting.mp3
+│   │   │   │   └── WelcomeXR.mp3
+│   │   │   └── textures
+│   │   │       ├── 360classroom1.jpg
+│   │   │       ├── circle.png
+│   │   │       ├── floor.png
+│   │   │       ├── hologramtable.png
+│   │   │       ├── progressbarBar.png
+│   │   │       └── progressbarFill.png
+│   │   ├── index.html
+│   │   └── index.js
+│   ├── index.html
+│   ├── package-lock.json (Information about the packages used)
+│   ├── package.json (Information on the dependencies used)
+│   ├── postcss.config.js
+│   ├── public
+│   │   └── assets
+│   │       ├── models (The models that will loaded into the scene that the user will interact with)
+│   │       │   ├── H.glb
+│   │       │   ├── H2.glb
+│   │       │   ├── H2O.glb
+│   │       │   ├── O.glb
+│   │       │   ├── O2.glb
+│   │       │   ├── cube.glb
+│   │       │   ├── cubeInvis.glb
+│   │       │   ├── hologramtable.glb
+│   │       │   └── school.glb
+│   │       ├── sounds (Used as feedback for when user perform actions like walking and more)
+│   │       │   ├── Boop.mp3
+│   │       │   ├── ClassroomBG.mp3
+│   │       │   ├── FootstepBackwards.mp3
+│   │       │   ├── FootstepForwards.mp3
+│   │       │   ├── Teleported.mp3
+│   │       │   ├── Teleporting.mp3
+│   │       │   └── WelcomeXR.mp3
+│   │       └── textures (Used for photodome, creating a more immersive environment) 
+│   │           ├── 360classroom1.jpg
+│   │           ├── circle.png
+│   │           ├── floor.png
+│   │           ├── hologramtable.png
+│   │           ├── progressbarBar.png
+│   │           └── progressbarFill.png
+│   ├── src
+│   │   ├── app.d.ts (Declare the Application class to be used elsewhere) 
+│   │   ├── app.ts
+│   │   ├── index.d.ts (Declare the createXRScene function to be used elsewhere)
+│   │   ├── index.html
+│   │   ├── index.js
+│   │   └── index.ts (Contains all the main code for the application, interaction etc)
+│   ├── tsconfig.json
+│   └── webpack.config.js
+└── xrauthor-uploads
+    ├── assets
+    │   ├── editorSessions
+    │   │   └── 0.json
+    │   ├── meta
+    │   │   └── meta.json
+    │   ├── models
+    │   │   ├── H2.glb
+    │   │   ├── H2O.glb
+    │   │   └── O2.glb
+    │   ├── recordingData
+    │   │   └── 0.json
+    │   └── videos
+    │       └── 0.webm
+    ├── extensions
+    ├── glTF-models
+    │   ├── H2.glb
+    │   ├── H2O.glb
+    │   └── O2.glb
+    └── run command in powershell.txt
+
+21 directories, 71 files
+```
