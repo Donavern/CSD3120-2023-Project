@@ -1,36 +1,48 @@
-# CSD3120 2023 IPA 1
+# CSD3120 2023 Team 12 Project
  
-Name: Sanford Donavern Ang Rui Xian
+Names: 
 
-SiT ID: 2001635
+- Sanford Donavern Ang Rui Xian (2001635) (s.ruixian)
 
-DigiPen ID: s.ruixian
+- Shaun Keck (2000795) (shaun.keck)
+
+- Lim Yi Shan Jonathan (2001521) (yishanjonathan.lim)
+
+- Loh Yong Zheng (2000975) (yongzheng.loh)
+
+- Tan Wei Han Reuven (2001846) (t.weihanreuven)
+
+- Fu Shao Wei (2000666) (shaowei.fu)
+
 #
-IPA-B Info:
+Team 12 Project Info
 
 1. Information on the application itself
-- VR application developed using typescript and babylonjs, tested with WebXR browser extension emulator
-- Chemistry lesson in a classroom themed environment that teaches users how to balance a simple equation
-- You can spawn H & O atoms, combine them to form molecules, combine the correct atoms/molecules to form H2, O2 and H2O
-- A hint will be displayed if the atoms/molecules can be combined
-- A circle will appear at where the user is intending to teleport to
-- There are many sounds and effects as feedback.
-- User can use either the keyboard & mouse or the oculus quest vr controllers. (Need to have 2 controllers)
+   - VR application developed using typescript and babylonjs, tested with WebXR browser extension emulator
+   - Chemistry lesson in a classroom themed environment that teaches users how to balance a simple equation
+   - You can spawn H & O atoms, combine them to form molecules, combine the correct atoms/molecules to form H2, O2 and H2O
+   - A hint will be displayed if the atoms/molecules can be combined (Move valid atoms/molecules together to combine)
+   - There will be objectives to follow
+   - You can walk with W/A/S/D
+   - A circle will appear at where the user is intending to teleport to
+   - There are many sounds and effects as feedback.
+   - User can use either the keyboard & mouse or the oculus quest vr controllers. (Need to have 2 controllers)
 <br></br> 
 
 2. Mouse & Keyboard controls
-- Left Click (Select/Grab objects) (Hold for teleport)
-- Q/E (z-axis rotation)
-- W/S (x-axis rotation)
-- A/D (y-axis rotation)
-- T (Toggle Scale/Translation/Rotation Mode)
-- Scroll wheel (Scale object)
+   - Left Click (Select/Grab objects) (Hold for teleport)
+   - Q/E (z-axis rotation)
+   - W/S (x-axis rotation)
+   - A/D (y-axis rotation)
+   - T (Toggle Scale/Translation/Rotation Mode)
+   - Scroll wheel (Scale object)
+   - W/A/S/D (Movement keys)
 <br></br>
 
 3. Oculus Quest controls (Important to have 2 working controllers)
-- Left Controller Trigger (Select/Grab Objects) (Hold for teleport)
-- Right Controller Trigger (Interact with Gizmos)
-- Right Controller Thumbstick (Toggle Scale/Translation/Rotation Mode)
+   - Left Controller Trigger (Select/Grab Objects) (Hold for teleport)
+   - Right Controller Trigger (Interact with Gizmos, left trigger needs to be held down)
+   - Right Controller Thumbstick (Toggle Scale/Translation/Rotation Mode)
 <br></br>
 
 4. How I expect my app to be assessed
@@ -44,7 +56,7 @@ IPA-B Info:
      - In any order, move the 3 molecules such that they overlap each other to combine them.
      - Toggle the scale/translation/rotation mode with T
      - Select 1 of the H2O molecule, use the mentioned keyboard controls for rotation and scaling
-     - Lastly, hold left click on the floor to teleport
+     - Lastly, hold left click on the floor to teleport & use W/A/S/D to walk
 
  - For Oculus Quest Controller:
      - Use LEFT trigger on the H and O atoms to spawn more instances
@@ -55,13 +67,12 @@ IPA-B Info:
      - Toggle the scale/translation/rotation mode with RIGHT controller's thumbstick
      - Hold 1 of the H2O molecule with LEFT trigger
      - Use RIGHT trigger to interact with the gizmos for rotation & scaling
-     - Lastly, hold LEFT trigger on the floor to teleport
+     - Lastly, hold LEFT trigger on the floor to teleport & use W/A/S/D to walk
 <br></br>
 
  5. Extra
-  - More details can be found in the comments in the code. Function-level comments are provided.
+     - More details can be found in the comments in the code. Function-level comments are provided.
 #
-IPA-A Info:
 XR Experience using babylonjs and XRAuthor
 
 1. Have a stable version of JS and NPM installed
@@ -89,10 +100,3 @@ XR Experience using babylonjs and XRAuthor
 Code Snippet: You will need the index.ts file located within "hello-xr\src". 
 You can then use "import {createXRScene} from './index'", do note the the './index', depending on where you put this file at relative to your main.js, can be different. 
 Afterwards, you can call the function using "createXRScene('renderCanvas',null);".
-
-Link: 
-https://youtu.be/4zZ8FJPciN4 (Link to the outputted video lesson I made using XRAuthor)
-
-video file is within xrauthor-uploads/assets/videos
-
-direct link: https://github.com/Donavern/CSD3120-2023-IPA-1/blob/main/xrauthor-uploads/assets/videos/0.webm
