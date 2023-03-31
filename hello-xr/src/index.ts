@@ -7,7 +7,8 @@
  */
 import {AdvancedDynamicTexture, TextBlock} from 'babylonjs-gui';
 import { Engine, MeshBuilder,Scene, Color3,Vector3, UniversalCamera, HemisphericLight, 
-    SceneLoader,AbstractMesh,Sound, PhotoDome, TransformNode, Space, AxisDragGizmo, RotationGizmo, ScaleGizmo, WebXRInput, WebXRInputSource, WebXRAbstractMotionController, WebXRControllerComponent, Ray, PickingInfo, WebXRSessionManager, Axis, Texture, StandardMaterial, Mesh, TextureSampler, Effect, ShaderMaterial, Hinge2Joint} from 'babylonjs';
+    SceneLoader,AbstractMesh,Sound, PhotoDome, TransformNode, Space, AxisDragGizmo, RotationGizmo, ScaleGizmo, WebXRInputSource, 
+    WebXRControllerComponent, Ray, PickingInfo, WebXRSessionManager, Axis, Texture, StandardMaterial, Effect, ShaderMaterial} from 'babylonjs';
 import 'babylonjs-loaders';
 
 //#region Helper Functions
@@ -228,6 +229,7 @@ function loadModels(scene : Scene,attachMeshesHint)
 
 /**
  * @param {} srtMode - object storing the edit mode (scale/translation/rotation) and the text for display
+ * @param {} objectiveText - obejct storing the text that will be changed based on user progress
  * @brief Create a bunch of text that displays helpful information to the user, like instructions
  */
 function createText(srtMode,objectiveText)
@@ -622,6 +624,7 @@ function updateModeText(number : number) : string
  * @param {Scene} scene - scene to use
  * @param {} selectedMesh - object storing the mesh that is currently picked / being held
  * @param {} teleportInfo - object storing location to teleport to, if user is holding right click, timer before teleporting, teleport threshold 
+ * @param {} spawnedMeshes - object storing the array of abstractmeshes, to track which meshes have been spawned and are still exisiting in the scene
  * @brief function called when a mouse is clicked or a controller trigger is pressed, to decide if an object should be picked or start teleporting
  */
 function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, selectedMesh,teleportInfo,spawnedMeshes)
@@ -688,11 +691,11 @@ function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, se
 
 /**
  * @param {PickingInfo} pickResult - store results of first mesh picked
- * @param {PickingInfo[]} pickResultMultiple - store results of all meshes picked
  * @param {Scene} scene - scene to use
  * @param {} selectedMesh - object storing the mesh that is currently picked / being held
  * @param {} teleportInfo - object storing location to teleport to, if user is holding right click, timer before teleporting, teleport threshold 
  * @param {} attachMeshesHint - object storing the meshes used as hint when combining
+ * @param {} spawnedMeshes - object storing the array of abstractmeshes, to track which meshes have been spawned and are still exisiting in the scene
  * @brief function called when mouse moves, or constantly in VR mode. To update teleport position. To decide if hint should be showed for atom/molecule combination
  */
 function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,selectedMesh,teleportInfo,attachMeshesHint,spawnedMeshes)
@@ -833,13 +836,13 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,sele
 
 /**
  * @param {PickingInfo} pickResult - store results of first mesh picked
- * @param {PickingInfo[]} pickResultMultiple - store results of all meshes picked
  * @param {Scene} scene - scene to use
  * @param {} selectedMesh - object storing the mesh that is currently picked / being held
  * @param {} attachMeshesHint - object storing the meshes used as hint when combining
  * @param {string} canvasID - string name of the canvas
  * @param {} teleportInfo - object storing location to teleport to, if user is holding right click, timer before teleporting, teleport threshold 
  * @param {} SFX - to store the sound to be used back in the main function
+ * @param {} spawnedMeshes - object storing the array of abstractmeshes, to track which meshes have been spawned and are still exisiting in the scene
  * @brief function called when mouse releases the left click or when vr controller trigger is released. To decide if atom/molecule should bond, to release object.
  */
 function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,selectedMesh,attachMeshesHint,canvasID : string,teleportInfo,SFX,spawnedMeshes)
@@ -1118,6 +1121,8 @@ function updateGizmo(selectedMesh, mouseDeltaY, srtMode,gizmos : Gizmos,rotateDe
  * @param {Scene} scene - scene to use
  * @param {} teleportInfo - object storing location to teleport to, if user is holding right click, timer before teleporting, teleport threshold 
  * @param {number} deltaTime - to increment the teleport counter
+ * @param {} shader - contains the shader stuff for the teleport bar
+ * @param {} SFX - object containing the sound files that can be played like for teleporting
  * @brief Decides if the user should teleport after incrementing the timer, checking if it hit the threshold time for teleporting
  */
 function updateTeleportTimer(scene : Scene,teleportInfo,deltaTime : number,shader, SFX)
@@ -1175,10 +1180,9 @@ function updateTeleportTimer(scene : Scene,teleportInfo,deltaTime : number,shade
 
 /**
  * @param {} mouseDeltaY - object storing the mouse scroll wheel direction
- * @param {} rotateDelta - object storing which x/y/z should be rotated based on key presses
  * @brief Resets the rotation value that was changed by keypress, also the mouse scroll
  */
-function resetVariablesForNextFrame(mouseDeltaY,rotateDelta)
+function resetVariablesForNextFrame(mouseDeltaY)
 {
     mouseDeltaY.value=0;
 }
@@ -1321,6 +1325,7 @@ function updateObjective(spawnedMeshes,objectiveText)
  * @param {Scene} scene - to manipulate the active camera
  * @param {} rotateDelta - to check which keys are pressed
  * @param {} selectedMesh - to check if mesh is being interacted with
+ * @param {} SFX - object containing the sounds that can be played like for footsteps/teleporting
  * @brief moves the camera based on keypress
  */
 function walk(scene : Scene, rotateDelta,selectedMesh,SFX)
@@ -1607,7 +1612,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
 
         scene.render();
 
-        resetVariablesForNextFrame(mouseDeltaY,rotateDelta);
+        resetVariablesForNextFrame(mouseDeltaY);
         updateObjective(spawnedMeshes,objectiveText);
         //#endregion
     });
