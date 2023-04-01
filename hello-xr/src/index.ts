@@ -476,8 +476,8 @@ function createText(srtMode,objectiveText)
 
     const objectiveTexture = AdvancedDynamicTexture.CreateForMesh(objectivePlane);
     objectiveText.text = new TextBlock('InstructionText');
-    objectiveText.text.text = 'Objective:\n';
-    objectiveText.text.color = 'white';
+    objectiveText.text.text = "Objective:\nCreate 2 O atom";
+    objectiveText.text.color = 'lightgreen';
     objectiveText.text.fontSize = 20;
     objectiveText.text.outlineColor = 'black';
     objectiveText.text.outlineWidth = 5;
@@ -497,6 +497,7 @@ function addSound(scene : Scene,SFX)
     SFX.teleported = new Sound('teleportedSFX','assets/sounds/Teleported.mp3',scene,null,{loop:false});
     SFX.footstepForwards = new Sound('footstepForwards','assets/sounds/FootstepForwards.mp3',scene,null,{loop:false});
     SFX.footstepBackwards = new Sound('footstepForwards','assets/sounds/FootstepBackwards.mp3',scene,null,{loop:false});
+    SFX.ding = new Sound('footstepForwards','assets/sounds/Ding.mp3',scene,null,{loop:false});
 }
 
 /**
@@ -673,7 +674,7 @@ function pointerDownGivenPickingInfo(pickResult : PickingInfo, scene : Scene, se
                 }
             );
         }
-        //Pick anything else but the school model and invis cube
+        //Pick anything else but the school model
         else if(pickResult.pickedMesh.name !== "School")
         {
             selectedMesh.mesh = pickResult.pickedMesh;
@@ -1262,9 +1263,10 @@ function loadTextures(scene : Scene, shader, teleportInfo)
 /**
  * @param {} spawnedMeshes - meshes in scene
  * @param {} objectiveText - object to store the teleporting bar
+ * @param {} SFX - object storing sound effects, to play the ding sound here when an objective is updated/completed
  * @brief Detects the meshes on scene and choose next objective for user
  */
-function updateObjective(spawnedMeshes,objectiveText)
+function updateObjective(spawnedMeshes,objectiveText,SFX)
 {
     let HCount : number = 0;
     let OCount : number = 0;
@@ -1297,26 +1299,38 @@ function updateObjective(spawnedMeshes,objectiveText)
 
     if(H2OCount)
     {
+        if(objectiveText.text.text !== "Objective:\nCompleted!")
+            SFX.ding.play();
         objectiveText.text.text = "Objective:\nCompleted!";
     }
     else if(H2Count >= 2 && O2Count >=1) //Have Both
     {
+        if(objectiveText.text.text !== "Objective:\nCombine 2H\u2082 molecules\nand 1O\u2082 molecule\nto make 2H\u2082O molecules\nby overlapping them")
+            SFX.ding.play();
         objectiveText.text.text = "Objective:\nCombine 2H\u2082 molecules\nand 1O\u2082 molecule\nto make 2H\u2082O molecules\nby overlapping them";
     }
     else if(O2Count < 1 && OCount>=2) //Lacking O2
     {
-        objectiveText.text.text = "Objective:\nCombine 2O molecules\nto make 1O\u2082 molecule";
+        if(objectiveText.text.text !== "Objective:\nCombine 2O atoms\nto make 1O\u2082 molecule")
+            SFX.ding.play();
+        objectiveText.text.text = "Objective:\nCombine 2O atoms\nto make 1O\u2082 molecule";
     }
     else if(H2Count < 2 && HCount>=2) //Lacking H2
     {
-        objectiveText.text.text = "Objective:\nCombine 2H molecules\nto make 1H\u2082 molecule";
+        if(objectiveText.text.text !== "Objective:\nCombine 2H atoms\nto make 1H\u2082 molecule")
+            SFX.ding.play();
+        objectiveText.text.text = "Objective:\nCombine 2H atoms\nto make 1H\u2082 molecule";
     }
     else if(OCount < 2 && O2Count === 0)
     {
+        if(objectiveText.text.text !== "Objective:\nCreate 2 O atom")
+            SFX.ding.play();
         objectiveText.text.text = "Objective:\nCreate 2 O atom";
     }
     else if(HCount < 2 && H2Count < 2)
     {
+        if(objectiveText.text.text !== "Objective:\nCreate 2 H atom")
+            SFX.ding.play();
         objectiveText.text.text = "Objective:\nCreate 2 H atom";
     }
 }
@@ -1411,7 +1425,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
         translationYGizmo: new AxisDragGizmo(new Vector3(0,1,0),Color3.Green()), translationZGizmo: new AxisDragGizmo(new Vector3(0,0,1),Color3.Blue()),
     rotationGizmo:new RotationGizmo(),scalingGizmo : new ScaleGizmo()};
     let attachMeshesHint = {H2:null,O2:null,H2O:null,H2Osecond:null};
-    let SFX = {boop: Sound, teleporting: Sound, teleported:Sound,footstepForwards:Sound,footstepBackwards:Sound};
+    let SFX = {boop: Sound, teleporting: Sound, teleported:Sound,footstepForwards:Sound,footstepBackwards:Sound,ding:Sound};
     let shader = {shader:ShaderMaterial};
     let objectiveText = {text : TextBlock};
 
@@ -1613,7 +1627,7 @@ export function createXRScene(canvasID : string, authoringData:{[dataType:string
         scene.render();
 
         resetVariablesForNextFrame(mouseDeltaY);
-        updateObjective(spawnedMeshes,objectiveText);
+        updateObjective(spawnedMeshes,objectiveText,SFX);
         //#endregion
     });
     //#endregion
