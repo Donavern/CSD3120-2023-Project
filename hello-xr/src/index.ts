@@ -86,7 +86,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             //Move lower & further
             root.position.x = 1.5;
             root.position.y = -6; 
-            root.position.z = 8; 
+            root.position.z = 4; 
 
             //Make bigger
             // root.scaling.x = 15;
@@ -472,7 +472,7 @@ function createText(srtMode,objectiveText)
     const objectivePlane = MeshBuilder.CreatePlane('Objective Plane',{size:15});
     objectivePlane.position.x = 0;
     objectivePlane.position.y = -6.3;
-    objectivePlane.position.z = 6;
+    objectivePlane.position.z = 5;
     objectivePlane.rotation = new Vector3(convertDegToRad(90.0),0.0,0.0);
     objectivePlane.isPickable=false;
 
@@ -1076,6 +1076,7 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                             result.meshes.forEach((mesh)=>{
                                 mesh.isPickable=true;
                             });
+                            spawnedMeshes.meshes.push(root);
                         }
                     );
 
@@ -1089,6 +1090,7 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                             result.meshes.forEach((mesh)=>{
                                 mesh.isPickable=true;
                             });
+                            spawnedMeshes.meshes.push(root);
                         }
                     );
 
@@ -1379,7 +1381,7 @@ function loadTextures(scene : Scene, shader, teleportInfo)
     const tableTopPlane = MeshBuilder.CreatePlane('TableTop Plane',{size:15});
     tableTopPlane.position.x = 0.7;
     tableTopPlane.position.y = -6.31;
-    tableTopPlane.position.z = 7.1;
+    tableTopPlane.position.z = 3.1;
     tableTopPlane.scaling.x = 1.21;
     tableTopPlane.scaling.y = 0.86;
     tableTopPlane.scaling.z = 0.2;
@@ -1420,12 +1422,11 @@ function updateObjective(spawnedMeshes,objectiveText,SFX)
         {
             ++O2Count;
         }
-        else if(mesh.name === "H2Oinstance")
+        else if(mesh.name.indexOf("H2Oinstance") !== -1)
         {
             ++H2OCount;
         }
     });
-
     if(H2OCount)
     {
         if(objectiveText.text.text !== "Objective:\nCompleted!")
