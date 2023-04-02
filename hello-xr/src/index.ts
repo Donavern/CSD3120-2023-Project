@@ -1096,9 +1096,9 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
 
                     let firstID = firstH2Mesh.uniqueId;
                     let secondID = secondH2Mesh.uniqueId;
-                    let thirdID = O2Mesh.parent.uniqueId;
+                    let thirdID = O2Mesh.uniqueId;
                     spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== firstID) && (mesh.uniqueId !== secondID) && (mesh.uniqueId !== thirdID));
-                    
+
                     firstH2Mesh.dispose();
                     secondH2Mesh.dispose();
                     O2Mesh.dispose();
