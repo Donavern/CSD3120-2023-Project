@@ -469,18 +469,19 @@ function createText(srtMode,objectiveText)
 
     //Objective
     const objectivePlane = MeshBuilder.CreatePlane('Objective Plane',{size:15});
-    objectivePlane.position.x = 5;
-    objectivePlane.position.y = -3;
-    objectivePlane.position.z = 9;
+    objectivePlane.position.x = 0;
+    objectivePlane.position.y = -7.3;
+    objectivePlane.position.z = 6;
+    objectivePlane.rotation = new Vector3(convertDegToRad(90.0),0.0,0.0);
     objectivePlane.isPickable=false;
 
     const objectiveTexture = AdvancedDynamicTexture.CreateForMesh(objectivePlane);
     objectiveText.text = new TextBlock('InstructionText');
     objectiveText.text.text = "Objective:\nCreate 2 O atom";
     objectiveText.text.color = 'lightgreen';
-    objectiveText.text.fontSize = 20;
+    objectiveText.text.fontSize = 80;
     objectiveText.text.outlineColor = 'black';
-    objectiveText.text.outlineWidth = 5;
+    objectiveText.text.outlineWidth = 2;
     objectiveTexture.addControl(objectiveText.text);
 }
 
@@ -1246,7 +1247,8 @@ function loadTextures(scene : Scene, shader, teleportInfo)
     shader.shader.setFloat("progress",0.0);
     shader.shader.setTexture("textureSampler",fill);
     fillPlane.material = shader.shader;
-
+    
+    //Teleport circle
     const circle = new Texture("assets/textures/circle.png", scene);
     circle.hasAlpha = true;
 
@@ -1258,6 +1260,24 @@ function loadTextures(scene : Scene, shader, teleportInfo)
     teleportInfo.circlePlane.isPickable = false;
     teleportInfo.circlePlane.material=circleMaterial;
     teleportInfo.circlePlane.isVisible=false;
+
+    //Table top
+    const table = new Texture("assets/textures/table.jpg", scene);
+
+    const tableMaterial = new StandardMaterial("tableMaterial",scene);
+    tableMaterial.diffuseTexture = table;
+
+    const tableTopPlane = MeshBuilder.CreatePlane('TableTop Plane',{size:15});
+    tableTopPlane.position.x = 0.7;
+    tableTopPlane.position.y = -7.31;
+    tableTopPlane.position.z = 7.1;
+    tableTopPlane.scaling.x = 1.21;
+    tableTopPlane.scaling.y = 0.86;
+    tableTopPlane.scaling.z = 0.2;
+    tableTopPlane.rotation = new Vector3(convertDegToRad(90.0),0.0,0.0);
+    tableTopPlane.isPickable=false;
+    tableTopPlane.material = tableMaterial;
+
 }
 
 /**
@@ -1305,21 +1325,21 @@ function updateObjective(spawnedMeshes,objectiveText,SFX)
     }
     else if(H2Count >= 2 && O2Count >=1) //Have Both
     {
-        if(objectiveText.text.text !== "Objective:\nCombine 2H\u2082 molecules\nand 1O\u2082 molecule\nto make 2H\u2082O molecules\nby overlapping them")
+        if(objectiveText.text.text !== "Objective:\nCombine 2H\u2082 molecules\nand 1O\u2082 molecule\nto make 2H\u2082O molecules\nby overlapping them\n(Place them together)")
             SFX.ding.play();
-        objectiveText.text.text = "Objective:\nCombine 2H\u2082 molecules\nand 1O\u2082 molecule\nto make 2H\u2082O molecules\nby overlapping them";
+        objectiveText.text.text = "Objective:\nCombine 2H\u2082 molecules\nand 1O\u2082 molecule\nto make 2H\u2082O molecules\nby overlapping them\n(Place them together)";
     }
     else if(O2Count < 1 && OCount>=2) //Lacking O2
     {
-        if(objectiveText.text.text !== "Objective:\nCombine 2O atoms\nto make 1O\u2082 molecule")
+        if(objectiveText.text.text !== "Objective:\nCombine 2O atoms\nto make 1O\u2082 molecule\n(Place them together)")
             SFX.ding.play();
-        objectiveText.text.text = "Objective:\nCombine 2O atoms\nto make 1O\u2082 molecule";
+        objectiveText.text.text = "Objective:\nCombine 2O atoms\nto make 1O\u2082 molecule\n(Place them together)";
     }
     else if(H2Count < 2 && HCount>=2) //Lacking H2
     {
-        if(objectiveText.text.text !== "Objective:\nCombine 2H atoms\nto make 1H\u2082 molecule")
+        if(objectiveText.text.text !== "Objective:\nCombine 2H atoms\nto make 1H\u2082 molecule\n(Place them together)")
             SFX.ding.play();
-        objectiveText.text.text = "Objective:\nCombine 2H atoms\nto make 1H\u2082 molecule";
+        objectiveText.text.text = "Objective:\nCombine 2H atoms\nto make 1H\u2082 molecule\n(Place them together)";
     }
     else if(OCount < 2 && O2Count === 0)
     {
