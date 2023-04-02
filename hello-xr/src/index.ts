@@ -452,7 +452,7 @@ function createText(srtMode,objectiveText)
 
     //Sub title text for scale/rotate/translation mode text display
     const srtModePlane = MeshBuilder.CreatePlane('SRT Mode Plane',{size:15});
-    srtModePlane.position.x = 5;
+    srtModePlane.position.x = 6;
     srtModePlane.position.y = -2;
     srtModePlane.position.z = 18.5;
     srtModePlane.isPickable=false;
@@ -614,11 +614,11 @@ function addWindowEventListeners(scene : Scene, engine,mouseDeltaY,rotateDelta,s
 function updateModeText(number : number) : string
 {
     if(number===0)
-        return "Current Mode:\nTranslate\n(Mouse&Wheel)";
+        return "Current Mode:\nTranslate\n(Mouse&Wheel)\n(Toggle with 'T' or right thumbstuck)";
     else if(number === 1)
-        return "Current Mode:\nRotate\n(WASD & QE)";
+        return "Current Mode:\nRotate\n(WASD & QE)\n(Toggle with 'T' or right thumbstuck)";
     else if(number === 2)
-        return "Current Mode:\nScale\n(Wheel)";
+        return "Current Mode:\nScale\n(Wheel)\n(Toggle with 'T' or right thumbstuck)";
 }
 
 /**
