@@ -108,7 +108,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             root.id = 'firstH2';
             root.name = 'firstH2';
             root.position.x = -3.6;
-            root.position.y = -5;
+            root.position.y = -4;
             root.position.z = 18.5;
             result.meshes.forEach((mesh)=>{
                 mesh.isPickable=false;
@@ -121,7 +121,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             const root = result.meshes[0];
             root.id = 'firstO2';
             root.name = 'firstO2';
-            root.position.y = -5;
+            root.position.y = -4;
             root.position.z = 18.5;
             result.meshes.forEach((mesh)=>{
                 mesh.isPickable=false;
@@ -135,7 +135,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             root.id = 'firstH2O';
             root.name = 'firstH2O';
             root.position.x = 3.5;
-            root.position.y = -5;
+            root.position.y = -4;
             root.position.z = 18.5;
 
             result.meshes.forEach((mesh)=>{
@@ -236,6 +236,7 @@ function createText(srtMode,objectiveText)
 {
     //Create title text
     const titlePlane = MeshBuilder.CreatePlane('Title Plane',{size:15});
+    titlePlane.position.y = 3;
     titlePlane.position.z = 18.5;
     titlePlane.isPickable=false;
 
@@ -250,7 +251,7 @@ function createText(srtMode,objectiveText)
 
     //Sub title text
     const subTitlePlane = MeshBuilder.CreatePlane('SubTitle Plane',{size:15});
-    subTitlePlane.position.y = -1;
+    subTitlePlane.position.y = 1;
     subTitlePlane.position.z = 18.5;
     subTitlePlane.isPickable=false;
 
@@ -266,7 +267,7 @@ function createText(srtMode,objectiveText)
     //teleport info
     const teleportInfoPlane = MeshBuilder.CreatePlane('SubTitle Plane',{size:15});
     teleportInfoPlane.position.x = -5;
-    teleportInfoPlane.position.y = -1;
+    teleportInfoPlane.position.y = 0;
     teleportInfoPlane.position.z = 18.5;
     teleportInfoPlane.isPickable=false;
 
@@ -328,7 +329,7 @@ function createText(srtMode,objectiveText)
 
     //Static molecules display test
     const displayTextPlane = MeshBuilder.CreatePlane('Display Plane',{size:15});
-    displayTextPlane.position.y = -3;
+    displayTextPlane.position.y = -2;
     displayTextPlane.position.z = 18.5;
     displayTextPlane.isPickable=false;
 
@@ -344,7 +345,7 @@ function createText(srtMode,objectiveText)
     //H2
     const H2TitlePlane = MeshBuilder.CreatePlane('H2 Title Plane',{size:15});
     H2TitlePlane.position.x = -3.5;
-    H2TitlePlane.position.y = -4;
+    H2TitlePlane.position.y = -3;
     H2TitlePlane.position.z = 18.5;
     H2TitlePlane.isPickable=false;
 
@@ -360,7 +361,7 @@ function createText(srtMode,objectiveText)
     //O2
     const O2TitlePlane = MeshBuilder.CreatePlane('O2 Title Plane',{size:15});
     O2TitlePlane.position.x = 0;
-    O2TitlePlane.position.y = -4;
+    O2TitlePlane.position.y = -3;
     O2TitlePlane.position.z = 18.5;
     O2TitlePlane.isPickable=false;
 
@@ -376,7 +377,7 @@ function createText(srtMode,objectiveText)
     //H2O
     const H2OTitlePlane = MeshBuilder.CreatePlane('H2O Title Plane',{size:15});
     H2OTitlePlane.position.x = 3.5;
-    H2OTitlePlane.position.y = -4;
+    H2OTitlePlane.position.y = -3;
     H2OTitlePlane.position.z = 18.5;
     H2OTitlePlane.isPickable=false;
 
@@ -437,7 +438,7 @@ function createText(srtMode,objectiveText)
     //O
     const OTitlePlane = MeshBuilder.CreatePlane('O Title Plane',{size:15});
     OTitlePlane.position.x = 2;
-    OTitlePlane.position.y = -5.5;
+    OTitlePlane.position.y = -4.5;
     OTitlePlane.position.z = 9;
     OTitlePlane.isPickable=false;
 
@@ -453,7 +454,7 @@ function createText(srtMode,objectiveText)
     //Sub title text for scale/rotate/translation mode text display
     const srtModePlane = MeshBuilder.CreatePlane('SRT Mode Plane',{size:15});
     srtModePlane.position.x = 6;
-    srtModePlane.position.y = -1;
+    srtModePlane.position.y = 0;
     srtModePlane.position.z = 18.5;
     srtModePlane.isPickable=false;
 
