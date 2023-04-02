@@ -54,7 +54,7 @@ function createClassRoomPhotoDome(scene : Scene)
  */
 function createCamera(scene: Scene,canvas : HTMLCanvasElement)
 {
-    const camera = new UniversalCamera('uniCamera',new Vector3(0,0,-7),scene);
+    const camera = new UniversalCamera('uniCamera',new Vector3(0,-1,-5),scene);
     camera.attachControl(canvas,true);
 }
 
@@ -85,7 +85,7 @@ function loadModels(scene : Scene,attachMeshesHint)
 
             //Move lower & further
             root.position.x = 1.5;
-            root.position.y = -7; 
+            root.position.y = -6; 
             root.position.z = 8; 
 
             //Make bigger
@@ -108,7 +108,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             root.id = 'firstH2';
             root.name = 'firstH2';
             root.position.x = -3.6;
-            root.position.y = -6;
+            root.position.y = -5;
             root.position.z = 18.5;
             result.meshes.forEach((mesh)=>{
                 mesh.isPickable=false;
@@ -121,7 +121,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             const root = result.meshes[0];
             root.id = 'firstO2';
             root.name = 'firstO2';
-            root.position.y = -6;
+            root.position.y = -5;
             root.position.z = 18.5;
             result.meshes.forEach((mesh)=>{
                 mesh.isPickable=false;
@@ -135,7 +135,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             root.id = 'firstH2O';
             root.name = 'firstH2O';
             root.position.x = 3.5;
-            root.position.y = -6;
+            root.position.y = -5;
             root.position.z = 18.5;
 
             result.meshes.forEach((mesh)=>{
@@ -151,7 +151,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             root.id = 'H';
             root.name = 'H';
             root.position.x = -2;
-            root.position.y = -6;
+            root.position.y = -5;
             root.position.z = 9;
             root.isPickable=true;
         }
@@ -163,7 +163,7 @@ function loadModels(scene : Scene,attachMeshesHint)
             root.id = 'O';
             root.name = 'O';
             root.position.x = 2;
-            root.position.y = -6;
+            root.position.y = -5;
             root.position.z = 9;
             root.isPickable=true;
         }
@@ -250,7 +250,7 @@ function createText(srtMode,objectiveText)
 
     //Sub title text
     const subTitlePlane = MeshBuilder.CreatePlane('SubTitle Plane',{size:15});
-    subTitlePlane.position.y = -2;
+    subTitlePlane.position.y = -1;
     subTitlePlane.position.z = 18.5;
     subTitlePlane.isPickable=false;
 
@@ -266,7 +266,7 @@ function createText(srtMode,objectiveText)
     //teleport info
     const teleportInfoPlane = MeshBuilder.CreatePlane('SubTitle Plane',{size:15});
     teleportInfoPlane.position.x = -5;
-    teleportInfoPlane.position.y = -2;
+    teleportInfoPlane.position.y = -1;
     teleportInfoPlane.position.z = 18.5;
     teleportInfoPlane.isPickable=false;
 
@@ -328,7 +328,7 @@ function createText(srtMode,objectiveText)
 
     //Static molecules display test
     const displayTextPlane = MeshBuilder.CreatePlane('Display Plane',{size:15});
-    displayTextPlane.position.y = -4;
+    displayTextPlane.position.y = -3;
     displayTextPlane.position.z = 18.5;
     displayTextPlane.isPickable=false;
 
@@ -344,7 +344,7 @@ function createText(srtMode,objectiveText)
     //H2
     const H2TitlePlane = MeshBuilder.CreatePlane('H2 Title Plane',{size:15});
     H2TitlePlane.position.x = -3.5;
-    H2TitlePlane.position.y = -5;
+    H2TitlePlane.position.y = -4;
     H2TitlePlane.position.z = 18.5;
     H2TitlePlane.isPickable=false;
 
@@ -360,7 +360,7 @@ function createText(srtMode,objectiveText)
     //O2
     const O2TitlePlane = MeshBuilder.CreatePlane('O2 Title Plane',{size:15});
     O2TitlePlane.position.x = 0;
-    O2TitlePlane.position.y = -5;
+    O2TitlePlane.position.y = -4;
     O2TitlePlane.position.z = 18.5;
     O2TitlePlane.isPickable=false;
 
@@ -376,7 +376,7 @@ function createText(srtMode,objectiveText)
     //H2O
     const H2OTitlePlane = MeshBuilder.CreatePlane('H2O Title Plane',{size:15});
     H2OTitlePlane.position.x = 3.5;
-    H2OTitlePlane.position.y = -5;
+    H2OTitlePlane.position.y = -4;
     H2OTitlePlane.position.z = 18.5;
     H2OTitlePlane.isPickable=false;
 
@@ -391,7 +391,7 @@ function createText(srtMode,objectiveText)
 
     //Instruction
     const instructionPlane = MeshBuilder.CreatePlane('Instruction Plane',{size:15});
-    instructionPlane.position.y = -4.5;
+    instructionPlane.position.y = -3.5;
     instructionPlane.position.z = 9;
     instructionPlane.isPickable=false;
 
@@ -405,7 +405,7 @@ function createText(srtMode,objectiveText)
     instructionTexture.addControl(instructionText);
 
     const subInstructionPlane = MeshBuilder.CreatePlane('subInstruction Plane',{size:15});
-    subInstructionPlane.position.y = -5;
+    subInstructionPlane.position.y = -4;
     subInstructionPlane.position.z = 9;
     subInstructionPlane.isPickable=false;
 
@@ -421,7 +421,7 @@ function createText(srtMode,objectiveText)
     //H
     const HTitlePlane = MeshBuilder.CreatePlane('H Title Plane',{size:15});
     HTitlePlane.position.x = -2;
-    HTitlePlane.position.y = -5.5;
+    HTitlePlane.position.y = -4.5;
     HTitlePlane.position.z = 9;
     HTitlePlane.isPickable=false;
 
@@ -453,7 +453,7 @@ function createText(srtMode,objectiveText)
     //Sub title text for scale/rotate/translation mode text display
     const srtModePlane = MeshBuilder.CreatePlane('SRT Mode Plane',{size:15});
     srtModePlane.position.x = 6;
-    srtModePlane.position.y = -2;
+    srtModePlane.position.y = -1;
     srtModePlane.position.z = 18.5;
     srtModePlane.isPickable=false;
 
@@ -470,7 +470,7 @@ function createText(srtMode,objectiveText)
     //Objective
     const objectivePlane = MeshBuilder.CreatePlane('Objective Plane',{size:15});
     objectivePlane.position.x = 0;
-    objectivePlane.position.y = -7.3;
+    objectivePlane.position.y = -6.3;
     objectivePlane.position.z = 6;
     objectivePlane.rotation = new Vector3(convertDegToRad(90.0),0.0,0.0);
     objectivePlane.isPickable=false;
@@ -1377,7 +1377,7 @@ function loadTextures(scene : Scene, shader, teleportInfo)
 
     const tableTopPlane = MeshBuilder.CreatePlane('TableTop Plane',{size:15});
     tableTopPlane.position.x = 0.7;
-    tableTopPlane.position.y = -7.31;
+    tableTopPlane.position.y = -6.31;
     tableTopPlane.position.z = 7.1;
     tableTopPlane.scaling.x = 1.21;
     tableTopPlane.scaling.y = 0.86;
