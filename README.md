@@ -71,6 +71,7 @@ Team 12 Project Info
 <br></br>
 
  5. Extra
+     - User Testing, Virtual Reality Sickness Questionnaire results: https://github.com/Donavern/CSD3120-2023-Project/issues/5
      - More details can be found in the comments in the code. Function-level comments are provided.
 #
 XR Experience using babylonjs and XRAuthor
