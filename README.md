@@ -116,25 +116,21 @@ Directory Tree
 │   │   │   │   ├── H2O.glb
 │   │   │   │   ├── O.glb
 │   │   │   │   ├── O2.glb
-│   │   │   │   ├── cube.glb
-│   │   │   │   ├── cubeInvis.glb
-│   │   │   │   ├── hologramtable.glb
 │   │   │   │   └── school.glb
 │   │   │   ├── sounds
 │   │   │   │   ├── Boop.mp3
 │   │   │   │   ├── ClassroomBG.mp3
+│   │   │   │   ├── Ding.mp3
 │   │   │   │   ├── FootstepBackwards.mp3
 │   │   │   │   ├── FootstepForwards.mp3
 │   │   │   │   ├── Teleported.mp3
-│   │   │   │   ├── Teleporting.mp3
-│   │   │   │   └── WelcomeXR.mp3
+│   │   │   │   └── Teleporting.mp3
 │   │   │   └── textures
 │   │   │       ├── 360classroom1.jpg
 │   │   │       ├── circle.png
-│   │   │       ├── floor.png
-│   │   │       ├── hologramtable.png
 │   │   │       ├── progressbarBar.png
-│   │   │       └── progressbarFill.png
+│   │   │       ├── progressbarFill.png
+│   │   │       └── table.jpg
 │   │   ├── index.html
 │   │   └── index.js
 │   ├── index.html
@@ -149,25 +145,22 @@ Directory Tree
 │   │       │   ├── H2O.glb
 │   │       │   ├── O.glb
 │   │       │   ├── O2.glb
-│   │       │   ├── cube.glb
-│   │       │   ├── cubeInvis.glb
-│   │       │   ├── hologramtable.glb
 │   │       │   └── school.glb
 │   │       ├── sounds (Used as feedback for when user perform actions like walking and more)
 │   │       │   ├── Boop.mp3
 │   │       │   ├── ClassroomBG.mp3
+│   │       │   ├── Ding.mp3
 │   │       │   ├── FootstepBackwards.mp3
 │   │       │   ├── FootstepForwards.mp3
 │   │       │   ├── Teleported.mp3
-│   │       │   ├── Teleporting.mp3
-│   │       │   └── WelcomeXR.mp3
+│   │       │   └── Teleporting.mp3
 │   │       └── textures (Used for photodome, creating a more immersive environment) 
 │   │           ├── 360classroom1.jpg
 │   │           ├── circle.png
-│   │           ├── floor.png
-│   │           ├── hologramtable.png
 │   │           ├── progressbarBar.png
-│   │           └── progressbarFill.png
+│   │           ├── progressbarFill.png
+│   │           └── table.jpg
+
 │   ├── src
 │   │   ├── app.d.ts (Declare the Application class to be used elsewhere) 
 │   │   ├── app.ts
