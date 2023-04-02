@@ -26,7 +26,7 @@ Team 12 Project Info
    - You can walk with W/A/S/D
    - A circle will appear at where the user is intending to teleport to
    - There are many sounds and effects as feedback.
-   - User can use either the keyboard & mouse or the oculus quest vr controllers. (Need to have 2 controllers)
+   - User can use either the keyboard & mouse or the oculus quest vr controllers. (Need to have 2 controllers, left & right)
 <br></br> 
 
 2. Mouse & Keyboard controls
@@ -77,11 +77,11 @@ XR Experience using babylonjs and XRAuthor
 
 1. Have a stable version of JS and NPM installed
 
-2. get node_modules, an run the command 
+2. get node_modules, run the command 
 
    ```npm install```
 
-3. Uncomment the last line in "index.ts"
+3. Uncomment the last line in "index.ts" (if it is commented)
 
    ```//createXRScene('renderCanvas',null);```
 
