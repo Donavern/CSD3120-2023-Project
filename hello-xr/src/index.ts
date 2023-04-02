@@ -782,20 +782,26 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,sele
                 {
                     O2Mesh = selectedMesh.mesh;
                 }
-        
+                
+                //Store the meshes that I intersected with
+                let intersectedMeshes = [] as AbstractMesh[];
+
                 //Now check if the selected mesh intersects with any other mesh
                 spawnedMeshes.meshes.forEach((mesh) => {
-                    if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,false,true))
+                    //Selected mesh is also within the array,
+                    if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId && selectedMesh.mesh.intersectsMesh(mesh.getChildren()[0],true,true))
                     {
                         if(mesh.name === "H2instance")
                         {
                             if(firstH2Mesh === null)
                             {
                                 firstH2Mesh = mesh;
+                                intersectedMeshes.push(mesh);
                             }
                             else if(secondH2Mesh === null)
                             {
                                 secondH2Mesh = mesh;
+                                intersectedMeshes.push(mesh);
                             }
                         }
                         else if(mesh.name ==="O2instance")
@@ -803,10 +809,46 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,sele
                             if(O2Mesh === null)
                             {
                                 O2Mesh = mesh;
+                                intersectedMeshes.push(mesh);
                             }
                         }
                     }
                 });
+
+                //If I did not detect all 3 at the start
+                if(firstH2Mesh === null || secondH2Mesh === null || O2Mesh === null)
+                {
+                    //Make sure i skip the selectedMesh
+                    //Make sure I skip the intersectedMesh
+                    spawnedMeshes.meshes.forEach((mesh)=>{
+                        if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId)
+                        {
+                            intersectedMeshes.forEach((intersectedMesh)=>{
+                                if(intersectedMesh.uniqueId !== mesh.uniqueId && mesh.getChildren()[0].intersectsMesh(intersectedMesh.getChildren()[0],true,true))
+                                {
+                                    if(mesh.name === "H2instance")
+                                    {
+                                        if(firstH2Mesh === null)
+                                        {
+                                            firstH2Mesh = mesh;
+                                        }
+                                        else if(secondH2Mesh === null)
+                                        {
+                                            secondH2Mesh = mesh;
+                                        }
+                                    }
+                                    else if(mesh.name ==="O2instance")
+                                    {
+                                        if(O2Mesh === null)
+                                        {
+                                            O2Mesh = mesh;
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
         
                 if(firstH2Mesh && secondH2Mesh && O2Mesh && selectedMesh.mesh.parent instanceof TransformNode)
                 {
@@ -867,7 +909,6 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                         mesh.id = "H2instance";
                         mesh.name = "H2instance";
                     });
-
                     spawnedMeshes.meshes.push(root);
                 }
             );
@@ -929,19 +970,25 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                 O2Mesh = selectedMesh.mesh;
             }
     
+            //Store the meshes that I intersected with
+            let intersectedMeshes = [] as AbstractMesh[];
+
             //Now check if the selected mesh intersects with any other mesh
             spawnedMeshes.meshes.forEach((mesh) => {
-                if(selectedMesh.mesh.id !== mesh.id && selectedMesh.mesh.intersectsMesh(mesh,false,true))
+                //Selected mesh is also within the array,
+                if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId && selectedMesh.mesh.intersectsMesh(mesh.getChildren()[0],true,true))
                 {
                     if(mesh.name === "H2instance")
                     {
                         if(firstH2Mesh === null)
                         {
                             firstH2Mesh = mesh;
+                            intersectedMeshes.push(mesh);
                         }
                         else if(secondH2Mesh === null)
                         {
                             secondH2Mesh = mesh;
+                            intersectedMeshes.push(mesh);
                         }
                     }
                     else if(mesh.name ==="O2instance")
@@ -949,10 +996,46 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                         if(O2Mesh === null)
                         {
                             O2Mesh = mesh;
+                            intersectedMeshes.push(mesh);
                         }
                     }
                 }
             });
+
+            //If I did not detect all 3 at the start
+            if(firstH2Mesh === null || secondH2Mesh === null || O2Mesh === null)
+            {
+                //Make sure i skip the selectedMesh
+                //Make sure I skip the intersectedMesh
+                spawnedMeshes.meshes.forEach((mesh)=>{
+                    if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId)
+                    {
+                        intersectedMeshes.forEach((intersectedMesh)=>{
+                            if(intersectedMesh.uniqueId !== mesh.uniqueId && mesh.getChildren()[0].intersectsMesh(intersectedMesh.getChildren()[0],true,true))
+                            {
+                                if(mesh.name === "H2instance")
+                                {
+                                    if(firstH2Mesh === null)
+                                    {
+                                        firstH2Mesh = mesh;
+                                    }
+                                    else if(secondH2Mesh === null)
+                                    {
+                                        secondH2Mesh = mesh;
+                                    }
+                                }
+                                else if(mesh.name ==="O2instance")
+                                {
+                                    if(O2Mesh === null)
+                                    {
+                                        O2Mesh = mesh;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
 
             if(firstH2Mesh && secondH2Mesh && O2Mesh)
             {
