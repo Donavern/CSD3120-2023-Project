@@ -821,6 +821,9 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,sele
                     //Make sure i skip the selectedMesh
                     //Make sure I skip the intersectedMesh
                     spawnedMeshes.meshes.forEach((mesh)=>{
+                        if(firstH2Mesh && secondH2Mesh && O2Mesh)
+                            return;
+
                         if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId)
                         {
                             intersectedMeshes.forEach((intersectedMesh)=>{
@@ -856,7 +859,7 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,sele
                     if (attachMeshesHint.H2O && attachMeshesHint.H2Osecond) 
                     {
                         const temp = attachMeshesHint.H2O as AbstractMesh;
-                        temp.position = selectedMesh.mesh.parent.position;
+                        temp.position.copyFrom(selectedMesh.mesh.parent.position);
         
                         temp.getChildren().forEach((mesh)=>{
                             const temp2 = mesh as AbstractMesh;
@@ -865,11 +868,30 @@ function pointerMoveGivenPickingInfo(pickResult : PickingInfo,scene : Scene,sele
         
                         const temp3 = attachMeshesHint.H2Osecond as AbstractMesh;
                         const meshToCameraDir = selectedMesh.mesh.parent.position.subtract(scene.activeCamera.position).normalize();
-                        temp3.position = selectedMesh.mesh.parent.position.subtract(meshToCameraDir);
+                        temp3.position.copyFrom(selectedMesh.mesh.parent.position.subtract(meshToCameraDir));
         
                         temp3.getChildren().forEach((mesh)=>{
                             const temp2 = mesh as AbstractMesh;
                             temp2.isVisible=true;
+                        });
+                    }
+                }
+                else
+                {
+                    if (attachMeshesHint.H2O !== null) 
+                    {
+                        const temp = attachMeshesHint.H2O as AbstractMesh;
+                        temp.getChildren().forEach((mesh)=>{
+                            const temp2 = mesh as AbstractMesh;
+                            temp2.isVisible=false;
+                        });
+                    }
+                    if (attachMeshesHint.H2Osecond !== null) 
+                    {
+                        const temp = attachMeshesHint.H2Osecond as AbstractMesh;
+                        temp.getChildren().forEach((mesh)=>{
+                            const temp2 = mesh as AbstractMesh;
+                            temp2.isVisible=false;
                         });
                     }
                 }
@@ -1008,6 +1030,9 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                 //Make sure i skip the selectedMesh
                 //Make sure I skip the intersectedMesh
                 spawnedMeshes.meshes.forEach((mesh)=>{
+                    if(firstH2Mesh && secondH2Mesh && O2Mesh)
+                        return;
+
                     if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId)
                     {
                         intersectedMeshes.forEach((intersectedMesh)=>{
