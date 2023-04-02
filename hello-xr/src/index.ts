@@ -940,8 +940,8 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
             let selectedID = selectedMesh.mesh.parent.uniqueId;
             spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== pickedID) && (mesh.uniqueId !== selectedID));
 
-            pickResult.pickedMesh.dispose();
-            selectedMesh.mesh.dispose();
+            pickResult.pickedMesh.parent.dispose();
+            selectedMesh.mesh.parent.dispose();
 
             if(SFX.boop instanceof Sound)
                 SFX.boop.play();
@@ -970,8 +970,8 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
             let selectedID = selectedMesh.mesh.parent.uniqueId;
             spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== pickedID) && (mesh.uniqueId !== selectedID));
 
-            pickResult.pickedMesh.dispose();
-            selectedMesh.mesh.dispose();
+            pickResult.pickedMesh.parent.dispose();
+            selectedMesh.mesh.parent.dispose();
 
             if(SFX.boop instanceof Sound)
                 SFX.boop.play();
@@ -982,8 +982,9 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
             let firstH2Mesh : AbstractMesh = null;
             let secondH2Mesh: AbstractMesh = null;
             let O2Mesh : AbstractMesh = null;
-
+            
             //Detect which mesh is being held, assign it to one of the above^
+            //Grabbing the child
             if(selectedMesh.mesh.name === "H2instance")
             {
                 firstH2Mesh = selectedMesh.mesh;
@@ -998,6 +999,7 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
 
             //Now check if the selected mesh intersects with any other mesh
             spawnedMeshes.meshes.forEach((mesh) => {
+                //The mesh here is the root/parent
                 //Selected mesh is also within the array,
                 if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId && selectedMesh.mesh.intersectsMesh(mesh.getChildren()[0],true,true))
                 {
@@ -1033,10 +1035,12 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                 spawnedMeshes.meshes.forEach((mesh)=>{
                     if(firstH2Mesh && secondH2Mesh && O2Mesh)
                         return;
-
+    
+                    //The mesh here ^ is the root/parent
                     if(selectedMesh.mesh.parent.uniqueId !== mesh.uniqueId)
                     {
                         intersectedMeshes.forEach((intersectedMesh)=>{
+                            //The intersected mesh here is also the root/parent
                             if(intersectedMesh.uniqueId !== mesh.uniqueId && mesh.getChildren()[0].intersectsMesh(intersectedMesh.getChildren()[0],true,true))
                             {
                                 if(mesh.name === "H2instance")
@@ -1073,9 +1077,7 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                             root.id = 'H2Oinstancefirst';
                             root.name = 'H2Oinstancefirst';
                             root.position = pickResult.pickedPoint;
-                            result.meshes.forEach((mesh)=>{
-                                mesh.isPickable=true;
-                            });
+                            root.isPickable=true;
                             spawnedMeshes.meshes.push(root);
                         }
                     );
@@ -1087,9 +1089,7 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                             root.id = 'H2Oinstancesecond';
                             root.name = 'H2Oinstancesecond';
                             root.position = pickResult.pickedPoint.subtract(meshToCameraDir);
-                            result.meshes.forEach((mesh)=>{
-                                mesh.isPickable=true;
-                            });
+                            root.isPickable=true;
                             spawnedMeshes.meshes.push(root);
                         }
                     );
@@ -1097,8 +1097,18 @@ function pointerUpGivenPickingInfo(pickResult : PickingInfo,scene : Scene,select
                     let firstID = firstH2Mesh.uniqueId;
                     let secondID = secondH2Mesh.uniqueId;
                     let thirdID = O2Mesh.uniqueId;
-                    spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== firstID) && (mesh.uniqueId !== secondID) && (mesh.uniqueId !== thirdID));
 
+                    if(selectedMesh.mesh.name === "H2instance")
+                    {
+                        firstID = firstH2Mesh.parent.uniqueId;
+                    }
+                    else if(selectedMesh.mesh.name === "O2instance")
+                    {
+                        thirdID = O2Mesh.parent.uniqueId;
+                    }
+
+                    spawnedMeshes.meshes = spawnedMeshes.meshes.filter(mesh=> (mesh.uniqueId !== firstID) && (mesh.uniqueId !== secondID) && (mesh.uniqueId !== thirdID));
+                    console.log(spawnedMeshes.meshes.length);
                     firstH2Mesh.dispose();
                     secondH2Mesh.dispose();
                     O2Mesh.dispose();
