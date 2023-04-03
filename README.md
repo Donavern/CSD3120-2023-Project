@@ -38,6 +38,8 @@ This video will showcase the features available in the application as well as wh
 
 https://user-images.githubusercontent.com/24448584/229531907-11bc8107-ab3d-46b2-866f-0c96bed6120f.mp4
 
+Link to video file: https://github.com/Donavern/CSD3120-2023-Project/tree/main/Video%20Demonstration
+
 Full Text Version:
 
 Throughout the application we have added small features to help improve the immersive experience of the user.
