@@ -1,5 +1,7 @@
-# CSD3120 2023 Team 12 Project
- 
+# CSD3120 2023 Team 12 Project📑
+
+# 👨‍🎓
+
 Names: 
 
 - Sanford Donavern Ang Rui Xian (2001635) (s.ruixian)
@@ -13,6 +15,8 @@ Names:
 - Tan Wei Han Reuven (2001846) (t.weihanreuven)
 
 - Fu Shao Wei (2000666) (shaowei.fu)
+
+# 📒
 
 Wiki: https://github.com/Donavern/CSD3120-2023-Project/wiki
 
@@ -28,7 +32,7 @@ The sections below contain information that are can also be found in the wiki li
 #
 Team 12 Project Info
 
-1. Information on the application itself
+1. Information on the application itself 🤔
    - VR application developed using typescript and babylonjs, tested with WebXR browser extension emulator
    - Chemistry lesson in a classroom themed environment that teaches users how to balance a simple equation
    - You can spawn H & O atoms, combine them to form molecules, combine the correct atoms/molecules to form H2, O2 and H2O
@@ -40,7 +44,7 @@ Team 12 Project Info
    - User can use either the keyboard & mouse or the oculus quest vr controllers. (Need to have 2 controllers, left & right)
 <br></br> 
 
-2. Mouse & Keyboard controls
+2. Mouse & Keyboard controls 🖱⌨
    - Left Click (Select/Grab objects) (Hold for teleport)
    - Q/E (z-axis rotation)
    - W/S (x-axis rotation)
@@ -50,7 +54,7 @@ Team 12 Project Info
    - W/A/S/D (Movement keys)
 <br></br>
 
-3. Oculus Quest controls (Important to have 2 working controllers)
+3. Oculus Quest controls (Important to have 2 working controllers) 🕹
    - Left Controller Trigger (Select/Grab Objects) (Hold for teleport)
    - Right Controller Trigger (Interact with Gizmos, left trigger needs to be held down)
    - Right Controller Thumbstick (Toggle Scale/Translation/Rotation Mode)
@@ -85,9 +89,9 @@ Team 12 Project Info
      - User Testing, Virtual Reality Sickness Questionnaire results: https://github.com/Donavern/CSD3120-2023-Project/issues/5
      - More details can be found in the comments in the code. Function-level comments are provided.
 #
-XR Experience using babylonjs and XRAuthor
+XR Experience using babylonjs and XRAuthor 🔧
 
-1. Have a stable version of JS and NPM installed
+1. Have a stable version of JS and NPM installed 
 
 2. get node_modules, run the command 
 
@@ -113,7 +117,7 @@ Code Snippet: You will need the index.ts file located within "hello-xr\src".
 You can then use "import {createXRScene} from './index'", do note the the './index', depending on where you put this file at relative to your main.js, can be different. 
 Afterwards, you can call the function using "createXRScene('renderCanvas',null);".
 #
-Directory Tree
+Directory Tree 🌲
 
 ```
 .
