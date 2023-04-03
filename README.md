@@ -22,6 +22,8 @@ Wiki: https://github.com/Donavern/CSD3120-2023-Project/wiki
 
 User Evaluation Report: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%93%96User-Evaluation-Report
 
+Video Demonstration: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%8E%A5Video-Demonstration-&-More
+
 Project Application Information: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%96%A5Project-Application-Information
 
 How to build & execute the project by itself: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%94%A7How-to-build-&-execute-the-project-by-itself
@@ -29,6 +31,25 @@ How to build & execute the project by itself: https://github.com/Donavern/CSD312
 Directory Tree: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%8C%B2Directory-Tree
 
 The sections below contain information that can also be found in the wiki links
+#
+🎥Video Demonstration & More
+
+This video will showcase the features available in the application as well as what we think that the feature provides for the user in terms of immersion:
+
+https://user-images.githubusercontent.com/24448584/229531907-11bc8107-ab3d-46b2-866f-0c96bed6120f.mp4
+
+Full Text Version:
+
+Throughout the application we have added small features to help improve the immersive experience of the user.
+
+Firstly, we have implemented multiple sound effects through the application. Users are able to move using the WASD keys and experience various footstep sounds to improve immersion. Furthermore, the speed of walking has been adjusted to feel realistic. For Teleportation, players will hear distinct sound effects for channelling and completing a successful teleportation, providing them with clear audio cues to indicate the progress of their action. Additionally, a classroom ambience sound effect has also been added to further enhance the immersion. Sound effects for interactions between molecules has also been added to notify users on action events
+
+Secondly, we have improved the way users can interact in the scene. Users can you W/A/S/D/Q/E to rotate and the scroll wheel to scale the designated object. Gizmos have been implemented for the VR mode in which the user can rotate and scale them. Moreover, valid combinations of molecules will be indicated by translucency, providing users with a helpful hint during the molecule combining process.
+
+Thirdly, we have tried our best to improve spatial presence for the users by enhancing the realism of the environment. Having a modelled classroom and a photodome, we hope to emulate the environment of a typical classroom as much as possible.
+
+Lastly, we have UI elements in the application that displays the objective of the application to help guide the users. This will provide clear goals for the users, helping them to experience flow in the scene.
+
 #
 Team 12 Project Info
 
