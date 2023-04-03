@@ -2,7 +2,7 @@
 
 # 👨‍🎓
 
-Names (SiT ID) (DigiPen ID): 
+Names (SIT ID) (DigiPen ID): 
 
 - Sanford Donavern Ang Rui Xian (2001635) (s.ruixian)
 
