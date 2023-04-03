@@ -100,17 +100,19 @@ XR Experience using babylonjs and XRAuthor 🔧
 3. Uncomment the last line in "index.ts" (if it is commented)
 
    ```//createXRScene('renderCanvas',null);```
+   
+4. Navigate the terminal to the folder "hello-xr"
 
-4. Run webpack to build and run the application
+5. Run webpack to build and run the application
 
    ```npm run build```
   
    ```npm run serve```
 
 
-5. Open ```http://localhost:3000/``` on browser
+6. Open ```http://localhost:3000/``` on browser
 
-6. Alternatively, you can just call my function "createXRScene" in your own code file somewhere else.
+Alternatively, you can just call my function "createXRScene" in your own code file somewhere else.
 
 
 Code Snippet: You will need the index.ts file located within "hello-xr\src". 
