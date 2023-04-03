@@ -20,13 +20,13 @@ Names:
 
 Wiki: https://github.com/Donavern/CSD3120-2023-Project/wiki
 
-User Evaluation Report: https://github.com/Donavern/CSD3120-2023-Project/wiki/User-Evaluation-Report
+User Evaluation Report: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%93%96User-Evaluation-Report
 
-Project Application Information: https://github.com/Donavern/CSD3120-2023-Project/wiki/Project-Application-Information
+Project Application Information: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%96%A5Project-Application-Information
 
-How to build & execute the project by itself: https://github.com/Donavern/CSD3120-2023-Project/wiki/How-to-build-&-execute-the-project-by-itself
+How to build & execute the project by itself: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%94%A7How-to-build-&-execute-the-project-by-itself
 
-Directory Tree: https://github.com/Donavern/CSD3120-2023-Project/wiki/Directory-Tree
+Directory Tree: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%8C%B2Directory-Tree
 
 The sections below contain information that are can also be found in the wiki links
 #
