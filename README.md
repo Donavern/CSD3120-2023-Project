@@ -141,6 +141,12 @@ Alternatively, you can just call my function "createXRScene" in your own code fi
 Code Snippet: You will need the index.ts file located within "hello-xr\src". 
 You can then use "import {createXRScene} from './index'", do note the the './index', depending on where you put this file at relative to your main.js, can be different. 
 Afterwards, you can call the function using "createXRScene('renderCanvas',null);".
+
+# Instruction to run the API from the dist Folder
+1. Head over to file directory `CSD3120-2023-Project\hello-xr\dist`
+2. Run the project in the terminal using the command `python -m http.server 8080`
+3. Head to Google Chrome and enter the following address in the search bar`http://localhost:8080`
+
 #
 Directory Tree 🌲
 
