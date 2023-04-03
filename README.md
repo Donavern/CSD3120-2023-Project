@@ -8,13 +8,13 @@ Names:
 
 - Shaun Keck (2000795) (shaun.keck)
 
-- Lim Yi Shan Jonathan (2001521) (yishanjonathan.lim)
+- Fu Shao Wei (2000666) (shaowei.fu)
 
 - Loh Yong Zheng (2000975) (yongzheng.loh)
 
 - Tan Wei Han Reuven (2001846) (t.weihanreuven)
 
-- Fu Shao Wei (2000666) (shaowei.fu)
+- Lim Yi Shan Jonathan (2001521) (yishanjonathan.lim)
 
 # 📒
 
@@ -28,7 +28,7 @@ How to build & execute the project by itself: https://github.com/Donavern/CSD312
 
 Directory Tree: https://github.com/Donavern/CSD3120-2023-Project/wiki/%F0%9F%8C%B2Directory-Tree
 
-The sections below contain information that are can also be found in the wiki links
+The sections below contain information that can also be found in the wiki links
 #
 Team 12 Project Info
 
