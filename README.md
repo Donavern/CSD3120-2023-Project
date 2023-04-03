@@ -14,6 +14,17 @@ Names:
 
 - Fu Shao Wei (2000666) (shaowei.fu)
 
+Wiki: https://github.com/Donavern/CSD3120-2023-Project/wiki
+
+User Evaluation Report: https://github.com/Donavern/CSD3120-2023-Project/wiki/User-Evaluation-Report
+
+Project Application Information: https://github.com/Donavern/CSD3120-2023-Project/wiki/Project-Application-Information
+
+How to build & execute the project by itself: https://github.com/Donavern/CSD3120-2023-Project/wiki/How-to-build-&-execute-the-project-by-itself
+
+Directory Tree: https://github.com/Donavern/CSD3120-2023-Project/wiki/Directory-Tree
+
+The sections below contain information that are can also be found in the wiki links
 #
 Team 12 Project Info
 
