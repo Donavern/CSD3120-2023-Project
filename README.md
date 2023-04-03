@@ -47,8 +47,8 @@ Team 12 Project Info
 2. Mouse & Keyboard controls 🖱⌨
    - Left Click (Select/Grab objects) (Hold for teleport)
    - Q/E (z-axis rotation)
-   - W/S (x-axis rotation)
-   - A/D (y-axis rotation)
+   - W/S (x-axis rotation) (Only when rotate mode is selected and an object is being held)
+   - A/D (y-axis rotation) (Only when rotate mode is selected and an object is being held)
    - T (Toggle Scale/Translation/Rotation Mode)
    - Scroll wheel (Scale object)
    - W/A/S/D (Movement keys)
